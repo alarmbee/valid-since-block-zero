@@ -1,0 +1,19 @@
+{
+  "name": "valid-since-block-zero",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "frontmatter:sync": "node scripts/sync-frontmatter-choices.mjs",
+    "docs:dev": "npm run frontmatter:sync && node scripts/build-catalog.mjs && vitepress dev docs --host",
+    "docs:prebuild": "npm run frontmatter:sync && node scripts/build-catalog.mjs && node scripts/sync-public-files.mjs",
+    "docs:build": "npm run docs:prebuild && vitepress build docs",
+    "docs:preview": "vitepress preview docs --host"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "vitepress": "^1.6.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

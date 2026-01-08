@@ -1,0 +1,141 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "defaultFileName": "{{id}}",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "default": "{{id}}"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Publishing date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Content preview",
+          "name": "preview",
+          "type": "image"
+        },
+        {
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
+        },
+        {
+          "title": "id",
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "links",
+          "name": "links",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "questions",
+              "name": "questions",
+              "type": "choice",
+              "choices": [
+                "Q-002",
+                "Q-003"
+              ]
+            },
+            {
+              "title": "templates",
+              "name": "templates",
+              "type": "choice",
+              "choices": [
+                "T-002"
+              ],
+              "fields": []
+            },
+            {
+              "title": "cases",
+              "name": "cases",
+              "type": "choice",
+              "choices": [
+                "C-2025-001",
+                "C-2025-002",
+                "C-2026-001",
+                "C-2026-002"
+              ],
+              "fields": []
+            },
+            {
+              "title": "conclusions",
+              "name": "conclusions",
+              "type": "choice",
+              "choices": [],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "title": "status",
+          "name": "status",
+          "type": "choice",
+          "choices": [
+            "nyitott",
+            "megválaszolt",
+            "további kérdéseket felvető"
+          ]
+        },
+        {
+          "title": "mailto",
+          "name": "mailto",
+          "type": "string"
+        },
+        {
+          "title": "subject",
+          "name": "subject",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "frontMatter.framework.id": "other",
+  "frontMatter.templates.prefix": "",
+  "frontMatter.content.publicFolder": "",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "templates",
+      "path": "[[workspace]]/docs/templates"
+    },
+    {
+      "title": "questions",
+      "path": "[[workspace]]/docs/questions"
+    },
+    {
+      "title": "cases",
+      "path": "[[workspace]]/docs/cases"
+    },
+    {
+      "title": "conclusions",
+      "path": "[[workspace]]/docs/conclusions"
+    }
+  ]
+}

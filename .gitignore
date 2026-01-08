@@ -1,0 +1,13 @@
+cache
+
+# VitePress build artifacts
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
+# Generated data (built by scripts/build-catalog.mjs)
+docs/.vitepress/data/catalog.generated.ts
+node_modules/
+docs/public/
+
+# Front Matter (VS Code extension) local database
+.frontmatter/

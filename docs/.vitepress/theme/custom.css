@@ -1,0 +1,121 @@
+/* Finom tipó + szélesebb tartalom, hogy jogi szöveg kényelmesebb legyen */
+:root {
+  --vp-layout-max-width: 1180px;
+}
+
+/* Desktopon kicsit szélesebb sidebar (mobil/tablet marad alap) */
+@media (min-width: 960px) {
+  :root {
+    --vp-sidebar-width: 320px;
+  }
+}
+
+/* Code blockoknál hosszú sorok kezelése */
+.vp-doc pre {
+  overflow-x: auto;
+}
+
+/* Related blokk listáinál egységesebb spacing */
+.vp-doc .vsbz-related ul {
+  margin: 0.25rem 0 0;
+}
+
+/* Sidebar elemek vizuális javítása */
+.VPSidebarItem.level-0 > .item[role="button"] {
+  cursor: pointer;
+}
+
+.VPSidebarItem.level-1 .text {
+  display: flex;
+  gap: 8px;
+  font-size: smaller;
+}
+
+.VPSidebarItem.level-1 .text::before {
+  content: "•";
+  color: var(--vp-c-text-2);
+  flex-shrink: 0;
+}
+
+/* Case sidebar cards (metadata-driven) */
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .text {
+  display: block;
+  font-size: unset;
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .text::before {
+  display: none;
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .link {
+  display: block;
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-sidebar-card {
+  display: block;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background-color: var(--vp-c-bg-soft);
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .link:hover .vsbz-sidebar-card {
+  border-color: var(--vp-c-brand);
+  background-color: var(--vp-c-bg-soft-up);
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-sidebar-card__id {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  margin-bottom: 0.15rem;
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-sidebar-card__title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+  line-height: 1.25;
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-sidebar-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: var(--vp-c-text-2);
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  border: 1px solid var(--vp-c-divider);
+  background-color: var(--vp-c-text-3);
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--open .vsbz-status-dot {
+  background-color: var(--vp-c-warning-1, var(--vp-c-brand-1, var(--vp-c-brand)));
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--answered .vsbz-status-dot {
+  background-color: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--followup .vsbz-status-dot {
+  background-color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+/* Az első elem (index/lista) kiemelése: félkövér és nincs bullet */
+.VPSidebarItem.level-1:first-child .text {
+  font-weight: 600;
+  font-size: unset;
+}
+
+.VPSidebarItem.level-1:first-child .text::before {
+  display: none;
+}
