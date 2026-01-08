@@ -187,9 +187,9 @@ const themeConfig: ThemeConfig = {
   // If any required value is missing, the comments widget will not render.
   giscus: {
     repo: "alarmbee/valid-since-block-zero",
-    repoId: "R_kgDOQzKjIA",
+    repoId: "R_kgDOQ2JnUg",
     category: "General",
-    categoryId: "DIC_kwDOQzKjIM4C0mNz",
+    categoryId: "DIC_kwDOQ2JnUs4C0uiB",
     mapping: "pathname",
     strict: "0",
     reactionsEnabled: "1",
