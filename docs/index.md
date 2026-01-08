@@ -51,6 +51,11 @@ Két kényelmes út van:
 - Meglévő oldalnál kattints a fájl szerkesztésére (ceruza ikon), új oldalnál használd az „Add file” lehetőséget.
 - A végén készíts pull requestet a módosításokra.
 
+<video controls width="800" preload="metadata">
+  <source src="./files/ghedit-2.mp4" type="video/mp4" />
+  A böngésződ nem támogatja a videó lejátszását.
+</video>
+
 Tipp: új oldalhoz érdemes a meglévő fájlokat mintának venni (például `Q-002.md`).
 
 ### Ha nem így szeretnéd
