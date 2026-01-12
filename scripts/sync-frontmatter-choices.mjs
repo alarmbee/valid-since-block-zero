@@ -108,27 +108,25 @@ async function main() {
     throw new Error('frontmatter.json: missing frontMatter.taxonomy.contentTypes');
   }
 
-  // We only maintain the first content type (currently "default").
-  const defaultType = contentTypes[0];
-  const linksField = findField(defaultType?.fields, 'links');
-  if (!linksField) throw new Error('frontmatter.json: missing fields.links');
+  for (const type of contentTypes) {
+    const linksField = findField(type?.fields, 'links');
+    if (!linksField) continue;
 
-  const linkSubfields = linksField.fields;
-  const questionsField = findField(linkSubfields, 'questions');
-  const templatesField = findField(linkSubfields, 'templates');
-  const casesField = findField(linkSubfields, 'cases');
-  const conclusionsField = findField(linkSubfields, 'conclusions');
+    const linkSubfields = linksField.fields;
+    const questionsField = findField(linkSubfields, 'questions');
+    const templatesField = findField(linkSubfields, 'templates');
+    const casesField = findField(linkSubfields, 'cases');
+    const conclusionsField = findField(linkSubfields, 'conclusions');
 
-  if (!questionsField || !templatesField || !casesField || !conclusionsField) {
-    throw new Error(
-      'frontmatter.json: missing one of links.questions|links.templates|links.cases|links.conclusions'
-    );
+    if (!questionsField || !templatesField || !casesField || !conclusionsField) {
+      continue;
+    }
+
+    questionsField.choices = ids.questions;
+    templatesField.choices = ids.templates;
+    casesField.choices = ids.cases;
+    conclusionsField.choices = ids.conclusions;
   }
-
-  questionsField.choices = ids.questions;
-  templatesField.choices = ids.templates;
-  casesField.choices = ids.cases;
-  conclusionsField.choices = ids.conclusions;
 
   const nextRaw = `${JSON.stringify(config, null, 2)}\n`;
   if (nextRaw === frontmatterRaw || nextRaw === `${frontmatterRaw}\n`) {
