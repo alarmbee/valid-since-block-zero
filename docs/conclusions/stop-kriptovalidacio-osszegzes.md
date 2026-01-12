@@ -50,12 +50,6 @@ Az oldalon szereplő érvelésből jól körvonalazható, hogy a megkeresés fó
 
 Az oldal ehhez konkrét "küldhető" eszközt is ad: a [Cselekedjen](https://stopkriptovalidacio.hu/#cselekedj) szekcióban a címzettek kiválaszthatók, és az üzenet előállítható.
 
-## Miért fontos, hogy a megkeresés kiemelten hivatkozzon a stopkriptovalidacio.hu oldalra?
-
-+ Mert egyetlen, nyilvános, linkelhető helyen mutatja a probléma összetevőit (áttekintés, szolgáltatók, idővonal).
-+ Mert a címzett számára is gyorsan ellenőrizhetővé teszi, hogy a megkeresés nem „benyomás”, hanem forrásokra támaszkodó, strukturált kérés.
-+ Mert a kapcsolódó részeket egyben tartja: [Szolgáltatók](https://stopkriptovalidacio.hu/#tozsdek) + [Idővonal](https://stopkriptovalidacio.hu/#idovonal) + [Képviselők](https://stopkriptovalidacio.hu/#kepviselok) + [Cselekedjen](https://stopkriptovalidacio.hu/#cselekedj).
-
 ## Gyors útmutató (hova és hogyan érdemes fordulni)
 
 Az oldal céljával összhangban, elsődleges csatorna a képviselői megkeresés:
