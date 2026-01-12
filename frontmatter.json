@@ -90,7 +90,8 @@
               "name": "conclusions",
               "type": "choice",
               "choices": [
-                "R-2026-001"
+                "R-2026-001",
+                "R-2026-002"
               ],
               "fields": []
             }
