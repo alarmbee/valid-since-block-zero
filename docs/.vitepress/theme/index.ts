@@ -5,6 +5,7 @@ import Layout from "./Layout.vue";
 import CatalogList from "./components/CatalogList.vue";
 import MailHeader from "./components/MailHeader.vue";
 import CaseStatusSummary from "./components/CaseStatusSummary.vue";
+import MailSendButton from "./components/MailSendButton.vue";
 
 export default {
 	extends: DefaultTheme,
@@ -13,5 +14,6 @@ export default {
 		app.component("CatalogList", CatalogList);
 		app.component("MailHeader", MailHeader);
 		app.component("CaseStatusSummary", CaseStatusSummary);
+		app.component("MailSendButton", MailSendButton);
 	}
 } satisfies Theme;
