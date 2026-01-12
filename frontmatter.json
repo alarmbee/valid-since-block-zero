@@ -89,7 +89,10 @@
               "title": "conclusions",
               "name": "conclusions",
               "type": "choice",
-              "choices": [],
+              "choices": [
+                "R-2026-001",
+                "R-2026-002"
+              ],
               "fields": []
             }
           ]
