@@ -35,8 +35,11 @@ A lista a [stopkriptovalidacio.hu](https://stopkriptovalidacio.hu/) oldalon, a *
 | [Kriptomat](https://kriptomat.io/temporary-suspension-of-trading-services-in-hungary/) | Korlátozott – Kereskedés ideiglenesen szünetel | 2025. december 26. |
 | YouHodler | Korlátozott – Kereskedés/konverzió felfüggesztve (HU rezidenseknek) | 2026. január 1. |
 | [MoonPay](https://support.moonpay.com/en/articles/380968-moonpay-s-unsupported-countries) | Korlátozott – Magyarország a nem támogatott országok listáján | 2026. január 2. |
+| [Nebeus](https://support.nebeus.com/portal/en/kb/articles/countries-eligible-for-nebeus-account-creation) | Korlátozott – Új regisztráció nem engedélyezett | 2026. január 7. |
 | [Revolut](https://help.revolut.com/en-HU/help/crypto/question-crypto-hungary-pausing-services-retail/) | Korlátozott – Kriptoszolgáltatások megszűntek | 2025. december 18. |
 | Strike | Korlátozott – Vásárlás és eladás megszűnt | 2026. január 9. |
+| [SwissBorg](https://swissborg.com/supported-countries) | Korlátozott – Szolgáltatás megszűnt | 2025. szeptember 10. |
+| [Uphold](https://support.uphold.com/hc/en-us/articles/360026786712-Non-Supported-Jurisdictions) | Korlátozott – Új fiók létrehozása nem elérhető | 2025. augusztus 13. |
 
 ### Bizonytalan
 
