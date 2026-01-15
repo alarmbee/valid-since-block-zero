@@ -61,7 +61,8 @@
               "type": "choice",
               "choices": [
                 "Q-002",
-                "Q-003"
+                "Q-003",
+                "Q-004"
               ]
             },
             {
@@ -69,7 +70,8 @@
               "name": "templates",
               "type": "choice",
               "choices": [
-                "T-002"
+                "T-002",
+                "T-003"
               ],
               "fields": []
             },
@@ -179,7 +181,8 @@
               "type": "choice",
               "choices": [
                 "Q-002",
-                "Q-003"
+                "Q-003",
+                "Q-004"
               ]
             },
             {
@@ -187,7 +190,8 @@
               "name": "templates",
               "type": "choice",
               "choices": [
-                "T-002"
+                "T-002",
+                "T-003"
               ],
               "fields": []
             },
@@ -290,7 +294,8 @@
               "type": "choice",
               "choices": [
                 "Q-002",
-                "Q-003"
+                "Q-003",
+                "Q-004"
               ]
             },
             {
@@ -298,7 +303,8 @@
               "name": "templates",
               "type": "choice",
               "choices": [
-                "T-002"
+                "T-002",
+                "T-003"
               ],
               "fields": []
             },

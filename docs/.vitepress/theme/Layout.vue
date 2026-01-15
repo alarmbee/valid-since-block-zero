@@ -8,6 +8,17 @@ import SiteFooter from './components/SiteFooter.vue';
 
 const route = useRoute();
 
+const TEMPLATE_PAGE_CLASS = 'vsbz-kind-template';
+
+function updateRootClassesForRoute(routePath: string) {
+  // Email template pages live under /templates/* (and we keep this check tolerant
+  // to older/alternate paths).
+  const isTemplatePage = routePath.startsWith('/templates/') || routePath.startsWith('/questions/templates/');
+
+  if (typeof document === 'undefined') return;
+  document.documentElement.classList.toggle(TEMPLATE_PAGE_CLASS, isTemplatePage);
+}
+
 let isProgrammaticSidebarClick = false;
 let accordionScheduled = false;
 let preferredOpenGroup: Element | null = null;
@@ -104,6 +115,7 @@ function installSidebarAccordionListeners() {
 }
 
 onMounted(async () => {
+  updateRootClassesForRoute(route.path);
   installSidebarAccordionListeners();
   scheduleAccordionEnforce();
 });
@@ -112,6 +124,7 @@ watch(
   () => route.path,
   async () => {
     preferredOpenGroup = null;
+    updateRootClassesForRoute(route.path);
     installSidebarAccordionListeners();
     scheduleAccordionEnforce();
   }
