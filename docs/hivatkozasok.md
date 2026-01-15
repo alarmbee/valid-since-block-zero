@@ -123,6 +123,12 @@ A források célja a magyarországi kriptoeszköz-ügyletekhez kapcsolódó **va
 
 **Link:** https://hvg.hu/360/20251230_kriptovalutak-hitelesites-caduceus-vesszos-gergely-equilor-titkosszolgalat-penzmosas-partfinanszirozas
 
+### Reddit – r/kriptovaluta: „Új infók a validálásról” (fórumbejegyzés)
+
+**Röviden:** Közösségi fórumposzt és hozzászólások a validációs folyamatról; nem hivatalos forrás, de a piaci tapasztalatok és felhasználói értelmezések feltérképezéséhez hasznos.
+
+**Link:** https://www.reddit.com/r/kriptovaluta/comments/1px01vn/%C3%BAj_inf%C3%B3k_a_valid%C3%A1l%C3%A1sr%C3%B3l/
+
 ---
 
 ## 🎧 YouTube – magyar nyelvű podcastok és videós beszélgetések
