@@ -9,14 +9,17 @@ import SiteFooter from './components/SiteFooter.vue';
 const route = useRoute();
 
 const TEMPLATE_PAGE_CLASS = 'vsbz-kind-template';
+const CASE_PAGE_CLASS = 'vsbz-kind-case';
 
 function updateRootClassesForRoute(routePath: string) {
   // Email template pages live under /templates/* (and we keep this check tolerant
   // to older/alternate paths).
   const isTemplatePage = routePath.startsWith('/templates/') || routePath.startsWith('/questions/templates/');
+  const isCasePage = routePath.startsWith('/cases/C-');
 
   if (typeof document === 'undefined') return;
   document.documentElement.classList.toggle(TEMPLATE_PAGE_CLASS, isTemplatePage);
+  document.documentElement.classList.toggle(CASE_PAGE_CLASS, isCasePage);
 }
 
 let isProgrammaticSidebarClick = false;
