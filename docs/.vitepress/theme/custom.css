@@ -15,13 +15,15 @@
   overflow-x: auto;
 }
 
-/* Email template oldalak: a VitePress alapértelmezett H2 elválasztó vonala zavaró */
-.vsbz-kind-template .vp-doc h2 {
+/* Email template és eset oldalak: a VitePress alapértelmezett H2 elválasztó vonala zavaró */
+.vsbz-kind-template .vp-doc h2,
+.vsbz-kind-case .vp-doc h2 {
   border-top: 0;
   padding-top: 0;
 }
 
-.vsbz-kind-template .vp-doc h2 .header-anchor {
+.vsbz-kind-template .vp-doc h2 .header-anchor,
+.vsbz-kind-case .vp-doc h2 .header-anchor {
   top: 0;
 }
 
