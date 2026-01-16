@@ -49,6 +49,11 @@ jobs:
             const author = pr.user?.login ?? 'unknown';
             const mergedBy = pr.merged_by?.login ?? 'unknown';
 
+            if (/^internal/i.test(String(title).trim())) {
+              core.info('PR title starts with "Internal"; skipping Telegram notification.');
+              return;
+            }
+
             const prFiles = await github.paginate(github.rest.pulls.listFiles, {
               owner: context.repo.owner,
               repo: context.repo.repo,
