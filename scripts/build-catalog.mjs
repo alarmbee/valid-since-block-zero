@@ -52,6 +52,14 @@ function normalizeLinks(input) {
   };
 }
 
+function normalizeThread(value) {
+  if (!value || typeof value !== 'object') return null;
+  const previous = value.previous ? String(value.previous) : null;
+  const next = value.next ? String(value.next) : null;
+  if (!previous && !next) return null;
+  return { previous, next };
+}
+
 function normalizeTags(value) {
   if (!value) return [];
   if (Array.isArray(value)) return value.filter(Boolean).map(String);
@@ -130,6 +138,7 @@ async function buildCatalog() {
           route,
           tags: normalizeTags(parsed.data?.tags),
           links: normalizeLinks(parsed.data?.links),
+          thread: kind === 'case' ? normalizeThread(parsed.data?.links?.thread ?? parsed.data?.thread) : null,
           status: kind === 'case' ? normalizeCaseStatus(parsed.data?.status) : null
         };
 
