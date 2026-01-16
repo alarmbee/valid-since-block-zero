@@ -194,9 +194,18 @@ const hasAnything = computed(() => {
   transition: border-color 0.25s, background-color 0.25s;
 }
 
+.vsbz-card-link {
+  color: var(--vp-c-brand-1);
+}
+
+.vsbz-card-link:visited {
+  color: var(--vp-c-brand-2);
+}
+
 .vsbz-card-link:hover {
   border-color: var(--vp-c-brand);
   background-color: var(--vp-c-bg-soft-up);
+  color: var(--vp-c-brand-2);
 }
 
 .vsbz-card-missing {
@@ -214,9 +223,10 @@ const hasAnything = computed(() => {
 
 .vsbz-card-title {
   display: block;
-  font-size: 1.05rem;
+  line-height: 20px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--vp-c-text-1);
+  color: inherit;
 }
 
 .vsbz-card-note {

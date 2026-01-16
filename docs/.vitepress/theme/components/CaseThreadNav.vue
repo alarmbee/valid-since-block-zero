@@ -148,9 +148,18 @@ const hasAnything = computed(() => Boolean(previous.value || next.value));
   transition: border-color 0.25s, background-color 0.25s;
 }
 
+a.vsbz-thread-card {
+  color: var(--vp-c-brand-1);
+}
+
+a.vsbz-thread-card:visited {
+  color: var(--vp-c-brand-2);
+}
+
 .vsbz-thread-card:hover {
   border-color: var(--vp-c-brand);
   background-color: var(--vp-c-bg-soft-up);
+  color: var(--vp-c-brand-2);
 }
 
 .vsbz-thread-card--missing {
@@ -174,9 +183,10 @@ const hasAnything = computed(() => Boolean(previous.value || next.value));
 
 .vsbz-thread-card-title {
   display: block;
-  font-size: 1.05rem;
+  line-height: 20px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--vp-c-text-1);
+  color: inherit;
 }
 
 .vsbz-thread-card-note {
