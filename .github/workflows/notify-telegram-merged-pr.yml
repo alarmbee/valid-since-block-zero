@@ -19,16 +19,25 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_MESSAGE_THREAD_ID: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
+          SITE_BASE_URL: ${{ secrets.SITE_BASE_URL }}
         with:
           script: |
             const token = process.env.TELEGRAM_BOT_TOKEN;
             const chatId = process.env.TELEGRAM_CHAT_ID;
             const threadId = process.env.TELEGRAM_MESSAGE_THREAD_ID;
+            const siteBaseUrlRaw = process.env.SITE_BASE_URL;
 
             if (!token || !chatId) {
               core.setFailed('Missing required secrets: TELEGRAM_BOT_TOKEN and/or TELEGRAM_CHAT_ID.');
               return;
             }
+
+            if (!siteBaseUrlRaw || !siteBaseUrlRaw.trim()) {
+              core.setFailed('Missing required secret: SITE_BASE_URL.');
+              return;
+            }
+
+            const siteBaseUrl = siteBaseUrlRaw.trim().replace(/\/+$/, '');
 
             const pr = context.payload.pull_request;
             const repo = `${context.repo.owner}/${context.repo.repo}`;
@@ -39,6 +48,31 @@ jobs:
             const url = pr.html_url ?? '';
             const author = pr.user?.login ?? 'unknown';
             const mergedBy = pr.merged_by?.login ?? 'unknown';
+
+            const prFiles = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+
+            const isNewContentPage = (filename) => {
+              if (!filename) return false;
+              if (!/^docs\/(questions|cases|templates|conclusions)\/.+\.md$/.test(filename)) return false;
+              if (/\/index\.md$/.test(filename)) return false;
+              return true;
+            };
+
+            const addedContentPages = prFiles
+              .filter((f) => f?.status === 'added' && isNewContentPage(f?.filename))
+              .map((f) => f.filename)
+              .sort((a, b) => a.localeCompare(b))
+              .slice(0, 3);
+
+            const contentUrls = addedContentPages.map((filename) => {
+              const route = filename.replace(/^docs\//, '').replace(/\.md$/, '');
+              return `${siteBaseUrl}/${route}`;
+            });
 
             const summary = body.trim().length ? body.trim() : '(no description)';
             const maxLen = 1200;
@@ -57,6 +91,7 @@ jobs:
               '',
               `<a href="${escapeHtml(url)}">Open on GitHub</a>`,
               `<i>Author:</i> ${escapeHtml(author)}  <i>Merged by:</i> ${escapeHtml(mergedBy)}`,
+              ...(contentUrls.length ? [''].concat(contentUrls.map(escapeHtml)) : []),
             ].join('\n');
 
             const params = new URLSearchParams();
