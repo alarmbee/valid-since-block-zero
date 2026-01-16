@@ -170,7 +170,14 @@ watch(
 </script>
 
 <template>
-  <a v-if="mailtoHref" class="mail-send-button" :href="mailtoHref" :aria-disabled="false">
+  <a
+    v-if="mailtoHref"
+    class="mail-send-button"
+    :href="mailtoHref"
+    :aria-disabled="false"
+    data-umami-event="mail_send"
+    :data-umami-event-title="page.title || ''"
+  >
     {{ props.buttonText ?? 'Elküldöm' }}
   </a>
 </template>
