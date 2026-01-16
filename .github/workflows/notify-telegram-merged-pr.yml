@@ -63,16 +63,20 @@ jobs:
               return true;
             };
 
-            const addedContentPages = prFiles
+            const allAddedContentPages = prFiles
               .filter((f) => f?.status === 'added' && isNewContentPage(f?.filename))
               .map((f) => f.filename)
-              .sort((a, b) => a.localeCompare(b))
-              .slice(0, 3);
+              .sort((a, b) => a.localeCompare(b));
+
+            const addedContentPages = allAddedContentPages.slice(0, 3);
+            const hasMoreContentPages = allAddedContentPages.length > 3;
 
             const contentUrls = addedContentPages.map((filename) => {
               const route = filename.replace(/^docs\//, '').replace(/\.md$/, '');
               return `${siteBaseUrl}/${route}`;
             });
+
+            if (hasMoreContentPages) contentUrls.push('...');
 
             const summary = body.trim().length ? body.trim() : '(no description)';
             const maxLen = 1200;
