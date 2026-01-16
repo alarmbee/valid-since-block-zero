@@ -11,6 +11,11 @@ export type CatalogLinks = {
 	conclusions: string[];
 };
 
+export type CatalogThread = {
+	previous: string | null;
+	next: string | null;
+} | null;
+
 export type CatalogItem = {
 	id: string;
 	title: string;
@@ -18,6 +23,7 @@ export type CatalogItem = {
 	route: string;
 	tags: string[];
 	links: CatalogLinks;
+	thread: CatalogThread;
 	status: string | null;
 };
 

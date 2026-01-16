@@ -126,6 +126,14 @@ async function main() {
     templatesField.choices = ids.templates;
     casesField.choices = ids.cases;
     conclusionsField.choices = ids.conclusions;
+
+    const threadField = findField(linkSubfields, 'thread');
+    if (threadField) {
+      const prevField = findField(threadField.fields, 'previous');
+      const nextField = findField(threadField.fields, 'next');
+      if (prevField) prevField.choices = ids.cases;
+      if (nextField) nextField.choices = ids.cases;
+    }
   }
 
   const nextRaw = `${JSON.stringify(config, null, 2)}\n`;

@@ -2,6 +2,7 @@
 import DefaultTheme from 'vitepress/theme';
 import { useRoute } from 'vitepress';
 import { nextTick, onMounted, watch } from 'vue';
+import CaseThreadNav from './components/CaseThreadNav.vue';
 import RelatedLinks from './components/RelatedLinks.vue';
 import GiscusComments from './components/GiscusComments.vue';
 import SiteFooter from './components/SiteFooter.vue';
@@ -136,8 +137,12 @@ watch(
 
 <template>
   <DefaultTheme.Layout>
-    <template #doc-after>
+    <template #doc-footer-before>
+      <CaseThreadNav />
       <RelatedLinks />
+    </template>
+
+    <template #doc-after>
       <GiscusComments />
     </template>
 

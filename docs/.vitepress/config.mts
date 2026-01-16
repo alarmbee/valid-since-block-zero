@@ -43,6 +43,11 @@ function caseStatusLabel(status: unknown): string {
 function itemsForKind(kind: "question" | "template" | "case") {
   return catalog.items
     .filter((i) => i.kind === kind)
+    .filter((i) => {
+      if (kind !== 'case') return true;
+      const prev = (i as any).thread?.previous;
+      return !prev;
+    })
     .slice()
     .sort(sortById)
     .map((i) => {
