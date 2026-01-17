@@ -4,6 +4,7 @@ import { useRoute } from 'vitepress';
 import { nextTick, onMounted, watch } from 'vue';
 import CaseThreadNav from './components/CaseThreadNav.vue';
 import RelatedLinks from './components/RelatedLinks.vue';
+import DocStatusBadge from './components/DocStatusBadge.vue';
 import GiscusComments from './components/GiscusComments.vue';
 import SiteFooter from './components/SiteFooter.vue';
 
@@ -137,6 +138,10 @@ watch(
 
 <template>
   <DefaultTheme.Layout>
+    <template #doc-before>
+      <DocStatusBadge />
+    </template>
+
     <template #doc-footer-before>
       <CaseThreadNav />
       <RelatedLinks />
