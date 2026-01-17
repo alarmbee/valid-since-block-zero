@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 const REPO_ROOT = process.cwd();
 const DOCS_DIR = path.join(REPO_ROOT, 'docs');
 const OUT_FILE = path.join(DOCS_DIR, '.vitepress', 'data', 'catalog.generated.ts');
+const OUT_JSON_FILE = path.join(DOCS_DIR, 'files', 'catalog.json');
 
 function toPosixPath(filePath) {
   return filePath.split(path.sep).join('/');
@@ -248,6 +249,9 @@ async function main() {
   const dataDir = path.dirname(OUT_FILE);
   await fs.mkdir(dataDir, { recursive: true });
 
+  const jsonDir = path.dirname(OUT_JSON_FILE);
+  await fs.mkdir(jsonDir, { recursive: true });
+
   const catalog = await buildCatalog();
 
   const ts = [
@@ -262,6 +266,9 @@ async function main() {
   ].join('\n');
 
   await fs.writeFile(OUT_FILE, ts, 'utf8');
+
+  const json = `${JSON.stringify(catalog, null, 2)}\n`;
+  await fs.writeFile(OUT_JSON_FILE, json, 'utf8');
 }
 
 main().catch((err) => {

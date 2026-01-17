@@ -11,3 +11,4 @@ docs/public/
 
 # Front Matter (VS Code extension) local database
 .frontmatter/
+/docs/files/catalog.json
