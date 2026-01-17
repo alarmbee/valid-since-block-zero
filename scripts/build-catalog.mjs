@@ -86,6 +86,50 @@ function normalizeCaseStatus(value) {
   return String(value);
 }
 
+function normalizeQuestionStatus(value) {
+  if (!value) return null;
+  const raw = String(value).trim().toLowerCase();
+
+  // Canonical short codes
+  if (raw === 'validation') return 'validation';
+  if (raw === 'operations') return 'operations';
+  if (raw === 'interpretation') return 'interpretation';
+  if (raw === 'certainty') return 'certainty';
+
+  // Canonical HU labels (severity)
+  if (raw === 'validálással kapcsolatos gyakorlati kérdés' || raw === 'validalassal kapcsolatos gyakorlati kerdes') {
+    return 'validation';
+  }
+  if (
+    raw === 'szolgáltató működési gyakorlatát érintő kérdés' ||
+    raw === 'szolgaltato mukodesi gyakorlatat erinto kerdes'
+  ) {
+    return 'operations';
+  }
+  if (raw === 'jogértelmezési kérdés' || raw === 'jogertelmezesi kerdes') {
+    return 'interpretation';
+  }
+  if (raw === 'jogbiztonságot érintő kérdés' || raw === 'jogbiztonsagot erinto kerdes') {
+    return 'certainty';
+  }
+
+  // Tolerant aliases (short keys)
+  if (raw === 'validation' || raw === 'practical' || raw === 'gyakorlati') {
+    return 'validation';
+  }
+  if (raw === 'operations' || raw === 'operational' || raw === 'mukodesi') {
+    return 'operations';
+  }
+  if (raw === 'interpretation' || raw === 'legal_interpretation' || raw === 'jogertelmezes') {
+    return 'interpretation';
+  }
+  if (raw === 'certainty' || raw === 'legal_certainty' || raw === 'jogbiztonsag') {
+    return 'certainty';
+  }
+
+  return String(value);
+}
+
 function deriveId(frontmatter, filePath) {
   if (frontmatter && frontmatter.id) return String(frontmatter.id);
   return path.basename(filePath, path.extname(filePath));
@@ -139,7 +183,12 @@ async function buildCatalog() {
           tags: normalizeTags(parsed.data?.tags),
           links: normalizeLinks(parsed.data?.links),
           thread: kind === 'case' ? normalizeThread(parsed.data?.links?.thread ?? parsed.data?.thread) : null,
-          status: kind === 'case' ? normalizeCaseStatus(parsed.data?.status) : null
+          status:
+            kind === 'case'
+              ? normalizeCaseStatus(parsed.data?.status)
+              : kind === 'question'
+                ? normalizeQuestionStatus(parsed.data?.status)
+                : null
         };
 
         byId[id] = item;

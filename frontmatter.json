@@ -165,6 +165,135 @@
       ]
     },
     {
+      "name": "questions",
+      "pageBundle": false,
+      "defaultFileName": "{{id}}",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "default": "{{id}}"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Publishing date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Content preview",
+          "name": "preview",
+          "type": "image"
+        },
+        {
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
+        },
+        {
+          "title": "id",
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "status",
+          "name": "status",
+          "type": "choice",
+          "choices": [
+            "validation",
+            "operations",
+            "interpretation",
+            "certainty"
+          ]
+        },
+        {
+          "title": "links",
+          "name": "links",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "questions",
+              "name": "questions",
+              "type": "choice",
+              "choices": [
+                "Q-002",
+                "Q-003",
+                "Q-004",
+                "Q-005"
+              ]
+            },
+            {
+              "title": "templates",
+              "name": "templates",
+              "type": "choice",
+              "choices": [
+                "T-002",
+                "T-003"
+              ],
+              "fields": []
+            },
+            {
+              "title": "cases",
+              "name": "cases",
+              "type": "choice",
+              "choices": [
+                "C-2025-001",
+                "C-2025-002",
+                "C-2026-001",
+                "C-2026-002",
+                "C-2026-003",
+                "C-2026-004",
+                "C-2026-005"
+              ],
+              "fields": []
+            },
+            {
+              "title": "conclusions",
+              "name": "conclusions",
+              "type": "choice",
+              "choices": [
+                "R-2026-001",
+                "R-2026-002",
+                "R-2026-003",
+                "R-2026-004",
+                "R-2026-005",
+                "R-2026-006"
+              ],
+              "fields": []
+            }
+          ]
+        },
+        {
+          "title": "mailto",
+          "name": "mailto",
+          "type": "string"
+        },
+        {
+          "title": "subject",
+          "name": "subject",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "cases",
       "pageBundle": false,
       "defaultFileName": "{{id}}",

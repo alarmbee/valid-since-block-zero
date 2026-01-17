@@ -40,6 +40,54 @@ function caseStatusLabel(status: unknown): string {
   return typeof status === 'string' && status.trim() ? status : 'ismeretlen';
 }
 
+type QuestionStatusKey = 'validation' | 'operations' | 'interpretation' | 'certainty' | 'unknown';
+
+function questionStatusKey(status: unknown): QuestionStatusKey {
+  if (!status) return 'unknown';
+  const raw = String(status).trim().toLowerCase();
+
+  if (raw === 'validation') return 'validation';
+  if (raw === 'operations') return 'operations';
+  if (raw === 'interpretation') return 'interpretation';
+  if (raw === 'certainty') return 'certainty';
+
+  if (raw === 'validálással kapcsolatos gyakorlati kérdés' || raw === 'validalassal kapcsolatos gyakorlati kerdes') return 'validation';
+  if (raw === 'szolgáltató működési gyakorlatát érintő kérdés' || raw === 'szolgaltato mukodesi gyakorlatat erinto kerdes') return 'operations';
+  if (raw === 'jogértelmezési kérdés' || raw === 'jogertelmezesi kerdes') return 'interpretation';
+  if (raw === 'jogbiztonságot érintő kérdés' || raw === 'jogbiztonsagot erinto kerdes') return 'certainty';
+
+  if (raw === 'validation' || raw === 'practical' || raw === 'gyakorlati') return 'validation';
+  if (raw === 'operations' || raw === 'operational' || raw === 'mukodesi') return 'operations';
+  if (raw === 'interpretation' || raw === 'legal_interpretation' || raw === 'jogertelmezes') return 'interpretation';
+  if (raw === 'certainty' || raw === 'legal_certainty' || raw === 'jogbiztonsag') return 'certainty';
+
+  return 'unknown';
+}
+
+function questionStatusIconClass(key: QuestionStatusKey): string {
+  if (key === 'validation') return 'fa-solid fa-shield-halved';
+  if (key === 'operations') return 'fa-solid fa-gears';
+  if (key === 'interpretation') return 'fa-solid fa-gavel';
+  if (key === 'certainty') return 'fa-solid fa-triangle-exclamation';
+  return 'fa-regular fa-circle-question';
+}
+
+function caseStatusIconClass(key: CaseStatusKey): string {
+  if (key === 'open') return 'fa-solid fa-hourglass-half';
+  if (key === 'answered') return 'fa-solid fa-circle-check';
+  if (key === 'followup') return 'fa-solid fa-circle-question';
+  return 'fa-regular fa-circle-question';
+}
+
+function questionStatusLabel(status: unknown): string {
+  const key = questionStatusKey(status);
+  if (key === 'validation') return 'validálással kapcsolatos gyakorlati kérdés';
+  if (key === 'operations') return 'szolgáltató működési gyakorlatát érintő kérdés';
+  if (key === 'interpretation') return 'jogértelmezési kérdés';
+  if (key === 'certainty') return 'jogbiztonságot érintő kérdés';
+  return typeof status === 'string' && status.trim() ? status : 'ismeretlen';
+}
+
 function itemsForKind(kind: "question" | "template" | "case") {
   return catalog.items
     .filter((i) => i.kind === kind)
@@ -51,7 +99,7 @@ function itemsForKind(kind: "question" | "template" | "case") {
     .slice()
     .sort(sortById)
     .map((i) => {
-      if (kind !== 'case') {
+      if (kind === 'template') {
         const text = [
           '<span class="vsbz-sidebar-card">',
           `  <span class="vsbz-sidebar-card__id">${escapeHtml(i.id)}</span>`,
@@ -62,16 +110,34 @@ function itemsForKind(kind: "question" | "template" | "case") {
         return { text, link: i.route };
       }
 
+      if (kind === 'question') {
+        const statusKey = questionStatusKey((i as any).status);
+        const statusLabel = escapeHtml(questionStatusLabel((i as any).status));
+        const iconClass = escapeHtml(questionStatusIconClass(statusKey));
+
+        const text = [
+          '<span class="vsbz-sidebar-card">',
+          `  <span class="vsbz-sidebar-card__id">${escapeHtml(i.id)}</span>`,
+          `  <span class="vsbz-sidebar-card__title">${escapeHtml(i.title)}</span>`,
+          `  <span class="vsbz-sidebar-card__status vsbz-qstatus--${statusKey}" data-tooltip="${statusLabel}">`,
+          `    <i class="vsbz-status-fa ${iconClass}" aria-hidden="true"></i>`,
+          '  </span>',
+          '</span>'
+        ].join('\n');
+
+        return { text, link: i.route };
+      }
+
       const statusKey = caseStatusKey((i as any).status);
       const statusLabel = escapeHtml(caseStatusLabel((i as any).status));
+      const iconClass = escapeHtml(caseStatusIconClass(statusKey));
 
       const text = [
         '<span class="vsbz-sidebar-card">',
         `  <span class="vsbz-sidebar-card__id">${escapeHtml(i.id)}</span>`,
         `  <span class="vsbz-sidebar-card__title">${escapeHtml(i.title)}</span>`,
-        `  <span class="vsbz-sidebar-card__status vsbz-status--${statusKey}">`,
-        '    <span class="vsbz-status-dot" aria-hidden="true"></span>',
-        `    <span class="vsbz-status-text">${statusLabel}</span>`,
+        `  <span class="vsbz-sidebar-card__status vsbz-status--${statusKey}" data-tooltip="${statusLabel}">`,
+        `    <i class="vsbz-status-fa ${iconClass}" aria-hidden="true"></i>`,
         '  </span>',
         '</span>'
       ].join('\n');
@@ -219,6 +285,13 @@ export default defineConfig({
   lastUpdated: true,
   cleanUrls: true,
   head: [
+    [
+      'link',
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+      }
+    ],
     [
       'script',
       {

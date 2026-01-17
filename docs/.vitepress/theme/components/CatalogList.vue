@@ -4,6 +4,7 @@ import { withBase } from 'vitepress';
 import { catalog } from '../../data/catalog';
 
 import { caseStatusKey, caseStatusLabel } from '../utils/caseStatus';
+import { questionStatusKey, questionStatusLabel } from '../utils/questionStatus';
 
 type Kind = 'question' | 'template' | 'case';
 
@@ -27,6 +28,28 @@ const items = computed(() => {
       <a :href="withBase(item.route)" class="vsbz-catalog-link">
         <span class="vsbz-catalog-id">{{ item.id }}</span>
         <span class="vsbz-catalog-title">{{ item.title }}</span>
+        <span
+          v-if="props.kind === 'question'"
+          class="vsbz-catalog-status"
+          :class="`vsbz-qstatus--${questionStatusKey(item.status)}`"
+        >
+          <i
+            class="vsbz-status-fa"
+            :class="
+              questionStatusKey(item.status) === 'validation'
+                ? 'fa-solid fa-shield-halved'
+                : questionStatusKey(item.status) === 'operations'
+                  ? 'fa-solid fa-gears'
+                  : questionStatusKey(item.status) === 'interpretation'
+                    ? 'fa-solid fa-gavel'
+                    : questionStatusKey(item.status) === 'certainty'
+                      ? 'fa-solid fa-triangle-exclamation'
+                      : 'fa-regular fa-circle-question'
+            "
+            aria-hidden="true"
+          />
+          <span class="vsbz-status-text">{{ questionStatusLabel(item.status) }}</span>
+        </span>
         <span
           v-if="props.kind === 'case'"
           class="vsbz-catalog-status"
@@ -101,6 +124,28 @@ const items = computed(() => {
   border: 1px solid var(--vp-c-divider);
   background-color: var(--vp-c-text-3);
   flex-shrink: 0;
+}
+
+
+.vsbz-status-fa {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.vsbz-qstatus--validation .vsbz-status-fa {
+  color: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+.vsbz-qstatus--operations .vsbz-status-fa {
+  color: var(--vp-c-brand-1, var(--vp-c-brand));
+}
+
+.vsbz-qstatus--interpretation .vsbz-status-fa {
+  color: var(--vp-c-warning-1, var(--vp-c-brand));
+}
+
+.vsbz-qstatus--certainty .vsbz-status-fa {
+  color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 
 .vsbz-status--open .vsbz-status-dot {
