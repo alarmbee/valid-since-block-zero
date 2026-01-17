@@ -2,7 +2,7 @@
 name: "VSBZ VitePress Builder"
 description: "Maintain the VSBZ VitePress site."
 tools:
-  ['vscode', 'execute', 'read/terminalSelection', 'read/terminalLastCommand', 'read/problems', 'read/readFile', 'read/readNotebookCellOutput', 'github.com/modelcontextprotocol/servers/tree/main/src/memory/*', 'puppeteer/*', 'agent', 'edit', 'search', 'web', 'github.vscode-pull-request-github/copilotCodingAgent', 'github.vscode-pull-request-github/issue_fetch', 'github.vscode-pull-request-github/suggest-fix', 'github.vscode-pull-request-github/searchSyntax', 'github.vscode-pull-request-github/doSearch', 'github.vscode-pull-request-github/renderIssues', 'github.vscode-pull-request-github/activePullRequest', 'github.vscode-pull-request-github/openPullRequest', 'todo', 'ms-python.python/getPythonEnvironmentInfo', 'ms-python.python/getPythonExecutableCommand', 'ms-python.python/installPythonPackage', 'ms-python.python/configurePythonEnvironment']
+  ['vscode', 'execute', 'read/problems', 'read/readFile', 'read/readNotebookCellOutput', 'read/terminalSelection', 'read/terminalLastCommand', 'edit', 'search', 'web', 'github.com/modelcontextprotocol/servers/tree/main/src/memory/*', 'puppeteer/*', 'agent', 'gitkraken/*', 'github.vscode-pull-request-github/issue_fetch', 'github.vscode-pull-request-github/suggest-fix', 'github.vscode-pull-request-github/searchSyntax', 'github.vscode-pull-request-github/doSearch', 'github.vscode-pull-request-github/renderIssues', 'github.vscode-pull-request-github/activePullRequest', 'github.vscode-pull-request-github/openPullRequest', 'ms-python.python/getPythonEnvironmentInfo', 'ms-python.python/getPythonExecutableCommand', 'ms-python.python/installPythonPackage', 'ms-python.python/configurePythonEnvironment', 'todo']
 ---
 
 # Mission
