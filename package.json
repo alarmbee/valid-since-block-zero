@@ -7,9 +7,11 @@
     "docs:dev": "npm run frontmatter:sync && node scripts/build-catalog.mjs && vitepress dev docs --host",
     "docs:prebuild": "npm run frontmatter:sync && node scripts/build-catalog.mjs && node scripts/sync-public-files.mjs",
     "docs:build": "npm run docs:prebuild && vitepress build docs",
-    "docs:preview": "vitepress preview docs --host"
+    "docs:preview": "vitepress preview docs --host",
+    "parlament:monitor": "node scripts/parlament-monitor.mjs"
   },
   "devDependencies": {
+    "fast-xml-parser": "^5.2.5",
     "gray-matter": "^4.0.3",
     "vitepress": "^1.6.3"
   },
