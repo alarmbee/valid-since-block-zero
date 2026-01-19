@@ -498,7 +498,7 @@ function toHitRecord(node, firstSeen) {
   };
 }
 
-async function sendTelegramMessage(text) {
+async function sendTelegramMessage(text, opts = {}) {
   if (!TELEGRAM_TOKEN || !TELEGRAM_CHAT_ID) {
     throw new Error('Missing TELEGRAM_BOT_TOKEN and/or TELEGRAM_CHAT_ID environment variables.');
   }
@@ -506,8 +506,12 @@ async function sendTelegramMessage(text) {
   const payload = {
     chat_id: TELEGRAM_CHAT_ID,
     text,
-    disable_web_page_preview: false
+    disable_web_page_preview: Boolean(opts.disable_web_page_preview)
   };
+
+  if (opts.parse_mode) {
+    payload.parse_mode = opts.parse_mode;
+  }
 
   if (TELEGRAM_MESSAGE_THREAD_ID) {
     payload.message_thread_id = Number(TELEGRAM_MESSAGE_THREAD_ID);
