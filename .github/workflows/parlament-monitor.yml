@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 concurrency:
   group: parlament-monitor
@@ -23,7 +24,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.18.1
           cache: npm
 
       - name: Install dependencies
@@ -43,7 +44,42 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_MESSAGE_THREAD_ID: ${{ secrets.TELEGRAM_MESSAGE_THREAD_ID }}
+          # AI (GitHub Models) config (prefer vars/secrets)
+          AI_API_BASE_URL: ${{ vars.AI_API_BASE_URL }}
+          AI_CHAT_COMPLETIONS_PATH: ${{ vars.AI_CHAT_COMPLETIONS_PATH }}
+          AI_MODEL: ${{ vars.AI_MODEL }}
+          AI_TEMPERATURE: ${{ vars.AI_TEMPERATURE }}
+          AI_MAX_TOKENS: ${{ vars.AI_MAX_TOKENS }}
+          AI_MAX_INPUT_CHARS: ${{ vars.AI_MAX_INPUT_CHARS }}
+          AI_PDF_MAX_PAGES: ${{ vars.AI_PDF_MAX_PAGES }}
+          AI_MAX_NEW_HITS: ${{ vars.AI_MAX_NEW_HITS }}
+          AI_USE_GITHUB_TOKEN: ${{ vars.AI_USE_GITHUB_TOKEN }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/parlament-monitor.mjs
+
+      - name: Update catalogs/frontmatter
+        run: npm run docs:prebuild
+
+      - name: Create pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "parlament-monitor: add generated case"
+          branch: "bot/parlament-monitor"
+          title: "parlament-monitor: új Eset bejegyzés"
+          body: |
+            Automatizált Eset-generálás a parlament-monitor alapján.
+
+            Megjegyzés: ha a forrás szkennelt PDF (nincs kinyerhető szöveg), a workflow Telegram fallback üzenetet küld és nem nyit PR-t.
+          labels: |
+            automated
+            parlament-monitor
+
+      - name: Apply monitor state (after PR)
+        if: steps.cpr.outputs.pull-request-number != ''
+        run: node scripts/parlament-monitor-apply-state.mjs
 
       - name: Save monitor state
         if: always()
