@@ -11,11 +11,13 @@
     "parlament:monitor": "node scripts/parlament-monitor.mjs"
   },
   "devDependencies": {
+    "cheerio": "^1.1.2",
     "fast-xml-parser": "^5.2.5",
     "gray-matter": "^4.0.3",
+    "pdfjs-dist": "^4.10.38",
     "vitepress": "^1.6.3"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.18.1"
   }
 }
