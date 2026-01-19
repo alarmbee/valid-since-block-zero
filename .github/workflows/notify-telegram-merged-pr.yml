@@ -61,27 +61,50 @@ jobs:
               per_page: 100,
             });
 
-            const isNewContentPage = (filename) => {
+            const isDocsMarkdownPage = (filename) => {
               if (!filename) return false;
-              if (!/^docs\/(questions|cases|templates|conclusions)\/.+\.md$/.test(filename)) return false;
-              if (/\/index\.md$/.test(filename)) return false;
+              if (!/^docs\/.+\.md$/.test(filename)) return false;
               return true;
             };
 
-            const allAddedContentPages = prFiles
-              .filter((f) => f?.status === 'added' && isNewContentPage(f?.filename))
+            const fileToRoute = (filename) => {
+              const withoutPrefix = String(filename).replace(/^docs\//, '').replace(/\.md$/, '');
+              if (withoutPrefix === 'index') return '';
+              if (/\/index$/.test(withoutPrefix)) return withoutPrefix.replace(/\/index$/, '/');
+              return withoutPrefix;
+            };
+
+            const routeToUrl = (route) => {
+              const cleanRoute = String(route ?? '').replace(/^\/+/, '');
+              if (!cleanRoute) return `${siteBaseUrl}/`;
+              return `${siteBaseUrl}/${cleanRoute}`;
+            };
+
+            const allNewDocsPages = prFiles
+              .filter((f) => f?.status === 'added' && isDocsMarkdownPage(f?.filename))
               .map((f) => f.filename)
               .sort((a, b) => a.localeCompare(b));
 
-            const addedContentPages = allAddedContentPages.slice(0, 3);
-            const hasMoreContentPages = allAddedContentPages.length > 3;
+            const allUpdatedDocsPages = prFiles
+              .filter((f) => (f?.status === 'modified' || f?.status === 'renamed') && isDocsMarkdownPage(f?.filename))
+              .map((f) => f.filename)
+              .sort((a, b) => a.localeCompare(b));
 
-            const contentUrls = addedContentPages.map((filename) => {
-              const route = filename.replace(/^docs\//, '').replace(/\.md$/, '');
-              return `${siteBaseUrl}/${route}`;
-            });
+            const newDocsPages = allNewDocsPages.slice(0, 3);
+            const updatedDocsPages = allUpdatedDocsPages.slice(0, 3);
+            const hasMoreNewDocsPages = allNewDocsPages.length > 3;
+            const hasMoreUpdatedDocsPages = allUpdatedDocsPages.length > 3;
 
-            if (hasMoreContentPages) contentUrls.push('...');
+            const newContentUrls = newDocsPages
+              .map(fileToRoute)
+              .map(routeToUrl);
+
+            const updatedUrls = updatedDocsPages
+              .map(fileToRoute)
+              .map(routeToUrl);
+
+            if (hasMoreNewDocsPages) newContentUrls.push('...');
+            if (hasMoreUpdatedDocsPages) updatedUrls.push('...');
 
             const summary = body.trim().length ? body.trim() : '(no description)';
             const maxLen = 1200;
@@ -92,6 +115,13 @@ jobs:
               .replaceAll('<', '&lt;')
               .replaceAll('>', '&gt;');
 
+            const formatUrl = (u) => {
+              const url = String(u);
+              if (url === '...') return '...';
+              const safe = escapeHtml(url);
+              return `<a href="${safe}">${safe}</a>`;
+            };
+
             const text = [
               `<b>Merged PR</b> <code>${escapeHtml(repo)}#${escapeHtml(number)}</code> → <code>${escapeHtml(base)}</code>`,
               `<b>${escapeHtml(title)}</b>`,
@@ -100,7 +130,8 @@ jobs:
               '',
               `<a href="${escapeHtml(url)}">Open on GitHub</a>`,
               `<i>Author:</i> ${escapeHtml(author)}  <i>Merged by:</i> ${escapeHtml(mergedBy)}`,
-              ...(contentUrls.length ? [''].concat(contentUrls.map(escapeHtml)) : []),
+              ...(updatedUrls.length ? ['','<b>Updated:</b>'].concat(updatedUrls.map(formatUrl)) : []),
+              ...(newContentUrls.length ? ['','<b>New content:</b>'].concat(newContentUrls.map(formatUrl)) : []),
             ].join('\n');
 
             const params = new URLSearchParams();

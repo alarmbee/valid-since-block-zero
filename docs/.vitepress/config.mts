@@ -205,6 +205,7 @@ const themeConfig: ThemeConfig = {
       items: [
         { text: "Kezdőlap", link: "/" },
         { text: "Névjegy", link: "/about" },
+        { text: "Hogy tudsz segíteni?", link: "/hogy-tudsz-segiteni" },
         { text: "Forrásanyagok", link: "/hivatkozasok" }
       ]
     },
