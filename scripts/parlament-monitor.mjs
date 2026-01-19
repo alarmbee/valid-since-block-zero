@@ -580,17 +580,89 @@ async function main() {
     return;
   }
 
-  const newest = newHits[0];
-  const url = newest?.url || 'https://www.parlament.hu/iromanyok';
-  const message = `Új iromány\n${url}`;
-  await sendTelegramMessage(message);
+  const toProcess = newHits.slice(0, Math.max(1, AI_MAX_NEW_HITS));
 
-  const nextState = {
-    updated: ts,
-    seen_izon: Array.from(new Set([...seen, ...newHits.map((h) => String(h.izon))])).sort()
-  };
+  let generatedCount = 0;
+  let failureNotified = false;
+  for (const hit of toProcess) {
+    const docUrl = hit?.url || 'https://www.parlament.hu/iromanyok';
+    const docId = hit?.izon ? String(hit.izon) : 'unknown';
+    const title = hit?.title ? String(hit.title) : '';
 
-  await writeJson(STATE_PATH, nextState);
+    try {
+      const sourceUrl = await resolveCanonicalSourceUrl(hit);
+      const fetchedAt = nowIsoUtc();
+      const fetched = await fetchBuffer(sourceUrl);
+      const docType = detectDocType(fetched.contentType, fetched.url, fetched.buffer);
+
+      let extracted;
+      if (docType === 'pdf') {
+        extracted = await extractTextFromPdf(fetched.buffer);
+      } else if (docType === 'html') {
+        extracted = await extractTextFromHtml(fetched.buffer.toString('utf8'));
+      } else {
+        throw new Error(`Unsupported source type (content-type=${fetched.contentType || 'n/a'})`);
+      }
+
+      if (isProbablyScannedOrEmpty(extracted.text)) {
+        throw new Error('Text extraction produced too little usable text (possible scanned PDF).');
+      }
+
+      const promptTemplate = await loadPromptTemplate();
+      const system =
+        'You are a careful Hungarian-language assistant. Create ONE Markdown document for docs/cases/.\n' +
+        'Rules: output only the Markdown file content, no code fences, no commentary.\n' +
+        'Grounding: Only use information present in the provided text/excerpts. If unsure, say so.\n' +
+        'Citations: For every material claim, cite the source URL and excerpt id (and page if provided).\n' +
+        'Style: Keep length and tone compatible with existing 2026 cases: formal, structured, concise.\n';
+
+      const user = fillTemplate(promptTemplate, {
+        DOC_ID: docId,
+        TITLE: title,
+        SOURCE_URL: fetched.url,
+        FETCHED_AT: fetchedAt,
+        DOC_TYPE: docType,
+        EXCERPTS_JSON: JSON.stringify(extracted.excerpts || [], null, 2),
+        TEXT: truncateMiddle(extracted.text, AI_MAX_INPUT_CHARS)
+      });
+
+      const rawOut = await callChatCompletions({ system, user });
+      const md = stripOuterCodeFence(rawOut);
+      validateCaseMarkdown(md);
+
+      const year = new Date().getUTCFullYear();
+      const caseId = await getNextCaseId(year);
+      const casePath = path.join(CASES_DIR, `${caseId}.md`);
+      await fs.writeFile(casePath, md.replaceAll('\r\n', '\n').trimEnd() + '\n', 'utf8');
+
+      await appendPendingSeen(docId);
+      generatedCount += 1;
+
+      await sendTelegramMessage(`Új iromány feldolgozva\n${docUrl}\nEset: ${caseId}`);
+    } catch (err) {
+      const reason = (err && err.message) || String(err);
+      const html = [
+        '<b>Parlament monitor: feldolgozás sikertelen</b>',
+        `Iromány: <code>${escapeHtml(docId)}</code>`,
+        title ? `Cím: ${escapeHtml(truncateMiddle(title, 180))}` : null,
+        `Forrás: <a href="${escapeHtml(docUrl)}">${escapeHtml(docUrl)}</a>`,
+        `Ok: <code>${escapeHtml(truncateMiddle(reason, 350))}</code>`
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+      await sendTelegramMessage(html, { parse_mode: 'HTML', disable_web_page_preview: true });
+      failureNotified = true;
+    }
+  }
+
+  // State is intentionally NOT updated here. A later workflow step merges PENDING_SEEN_PATH
+  // into STATE_PATH only after a PR has been created.
+  if (generatedCount === 0 && !failureNotified) {
+    const newest = toProcess[0];
+    const url = newest?.url || 'https://www.parlament.hu/iromanyok';
+    await sendTelegramMessage(`Új iromány\n${url}`);
+  }
 }
 
 main().catch((err) => {
