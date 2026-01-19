@@ -75,6 +75,269 @@ async function fetchText(url) {
   return await res.text();
 }
 
+async function fetchBuffer(url, opts = {}) {
+  const res = await fetch(url, { redirect: 'follow', ...opts });
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`HTTP ${res.status} ${res.statusText} for ${url}${body ? `: ${body.slice(0, 500)}` : ''}`);
+  }
+  const arrayBuffer = await res.arrayBuffer();
+  return {
+    url: res.url || url,
+    contentType: res.headers.get('content-type') || '',
+    buffer: Buffer.from(arrayBuffer)
+  };
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function truncateMiddle(s, maxLen) {
+  const str = String(s ?? '');
+  if (str.length <= maxLen) return str;
+  const head = Math.max(0, Math.floor((maxLen - 3) / 2));
+  const tail = Math.max(0, maxLen - 3 - head);
+  return str.slice(0, head) + '...' + str.slice(str.length - tail);
+}
+
+function detectDocType(contentType, url, buffer) {
+  const ct = String(contentType || '').toLowerCase();
+  const u = String(url || '').toLowerCase();
+  if (ct.includes('application/pdf')) return 'pdf';
+  if (ct.includes('text/html')) return 'html';
+  if (u.endsWith('.pdf')) return 'pdf';
+  if (u.endsWith('.htm') || u.endsWith('.html')) return 'html';
+  if (buffer && buffer.length >= 5 && buffer.subarray(0, 5).toString('utf8') === '%PDF-') return 'pdf';
+  return 'unknown';
+}
+
+function normalizeTextBlock(text) {
+  return String(text || '')
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function splitIntoExcerpts(text, opts = {}) {
+  const maxExcerptLen = opts.maxExcerptLen ?? 700;
+  const maxExcerpts = opts.maxExcerpts ?? 5;
+  const normalized = normalizeTextBlock(text);
+  if (!normalized) return [];
+
+  const step = Math.max(1, Math.floor(normalized.length / Math.max(1, maxExcerpts)));
+  const excerpts = [];
+  for (let i = 0; i < maxExcerpts; i++) {
+    const start = i * step;
+    if (start >= normalized.length) break;
+    const slice = normalized.slice(start, start + maxExcerptLen);
+    if (slice.length < 120) continue;
+    excerpts.push(slice);
+  }
+  return excerpts;
+}
+
+async function extractTextFromPdf(buffer) {
+  const loadingTask = pdfjsLib.getDocument({ data: buffer, disableWorker: true });
+  const pdf = await loadingTask.promise;
+  const pageCount = pdf.numPages || 0;
+  const pagesToRead = Math.max(1, Math.min(pageCount, AI_PDF_MAX_PAGES));
+  const pageTexts = [];
+
+  for (let pageNumber = 1; pageNumber <= pagesToRead; pageNumber++) {
+    // eslint-disable-next-line no-await-in-loop
+    const page = await pdf.getPage(pageNumber);
+    // eslint-disable-next-line no-await-in-loop
+    const content = await page.getTextContent();
+    const text = normalizeTextBlock((content.items || []).map((it) => it?.str || '').join(' '));
+    pageTexts.push({ page: pageNumber, text });
+  }
+
+  const fullText = normalizeTextBlock(pageTexts.map((p) => p.text).join('\n\n'));
+
+  const excerptSources = [];
+  const pickPages = new Set([1, Math.max(1, Math.floor(pagesToRead / 2)), pagesToRead]);
+  for (const p of pageTexts) {
+    if (!pickPages.has(p.page)) continue;
+    const ex = splitIntoExcerpts(p.text, { maxExcerpts: 1, maxExcerptLen: 700 })[0];
+    if (!ex) continue;
+    excerptSources.push({ excerpt_id: `P${p.page}`, page: p.page, text: ex });
+  }
+
+  return { text: fullText, excerpts: excerptSources };
+}
+
+async function extractTextFromHtml(html) {
+  const $ = cheerio.load(String(html || ''));
+  $('script,style,noscript,svg,nav,header,footer,form,aside').remove();
+  const main = $('main').text() || $('article').text() || $('body').text() || $.root().text();
+  const text = normalizeTextBlock(main);
+  const excerptSources = splitIntoExcerpts(text, { maxExcerpts: 4, maxExcerptLen: 700 }).map((t, idx) => ({
+    excerpt_id: `H${idx + 1}`,
+    page: null,
+    text: t
+  }));
+  return { text, excerpts: excerptSources };
+}
+
+function isProbablyScannedOrEmpty(extractedText) {
+  const t = normalizeTextBlock(extractedText);
+  if (t.length < 1500) return true;
+  const letters = (t.match(/[\p{L}]/gu) || []).length;
+  return letters < 600;
+}
+
+async function resolveCanonicalSourceUrl(hit) {
+  const initial = hit?.url ? String(hit.url) : '';
+  if (initial && initial.toLowerCase().endsWith('.pdf')) return initial;
+
+  if (initial) {
+    try {
+      const html = await fetchText(initial);
+      const $ = cheerio.load(html);
+      const pdfCandidates = [];
+      $('a[href]').each((_, el) => {
+        const href = String($(el).attr('href') || '').trim();
+        if (!href) return;
+        if (!href.toLowerCase().endsWith('.pdf')) return;
+        pdfCandidates.push(absolutizeParlamentUrl(href));
+      });
+      const firstPdf = pdfCandidates.find(Boolean);
+      if (firstPdf) return firstPdf;
+    } catch {
+      // Ignore; fall back to heuristics.
+    }
+  }
+
+  const id = hit?.izon ? String(hit.izon) : '';
+  const digits = id.match(/(\d{3,})/g)?.join('') || '';
+  if (digits) {
+    const heuristicPdf = `https://www.parlament.hu/irom42/${digits}/${digits}.pdf`;
+    try {
+      const res = await fetch(heuristicPdf, { method: 'HEAD', redirect: 'follow' });
+      if (res.ok) return heuristicPdf;
+    } catch {
+      // ignore
+    }
+  }
+
+  return initial || 'https://www.parlament.hu/iromanyok';
+}
+
+async function loadPromptTemplate() {
+  try {
+    return await fs.readFile(AI_PROMPT_PATH, 'utf8');
+  } catch {
+    return '';
+  }
+}
+
+function fillTemplate(template, vars) {
+  let out = String(template || '');
+  for (const [k, v] of Object.entries(vars || {})) {
+    out = out.replaceAll(`{{${k}}}`, String(v));
+  }
+  return out;
+}
+
+function joinUrl(base, pathPart) {
+  const b = String(base || '').replace(/\/+$/, '');
+  const p = String(pathPart || '').startsWith('/') ? String(pathPart || '') : `/${pathPart}`;
+  return `${b}${p}`;
+}
+
+async function callChatCompletions({ system, user }) {
+  if (!AI_API_BASE_URL || !AI_MODEL || !AI_API_KEY) {
+    throw new Error(
+      'Missing AI config: AI_API_BASE_URL, AI_MODEL, and AI_API_KEY (or AI_USE_GITHUB_TOKEN=true with GITHUB_TOKEN).'
+    );
+  }
+
+  const url = joinUrl(AI_API_BASE_URL, AI_CHAT_COMPLETIONS_PATH);
+  const payload = {
+    model: AI_MODEL,
+    temperature: AI_TEMPERATURE,
+    max_tokens: AI_MAX_TOKENS,
+    messages: [
+      { role: 'system', content: system },
+      { role: 'user', content: user }
+    ]
+  };
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      authorization: `Bearer ${AI_API_KEY}`,
+      'content-type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const json = await resp.json().catch(() => null);
+  if (!resp.ok) {
+    const msg = json ? JSON.stringify(json).slice(0, 500) : '';
+    throw new Error(`AI chat completion failed (${resp.status} ${resp.statusText})${msg ? `: ${msg}` : ''}`);
+  }
+
+  const content = json?.choices?.[0]?.message?.content;
+  if (!content || typeof content !== 'string') {
+    throw new Error('AI chat completion returned no content.');
+  }
+
+  return content;
+}
+
+function stripOuterCodeFence(s) {
+  const text = String(s || '').trim();
+  const m = text.match(/^```[a-zA-Z0-9_-]*\n([\s\S]*?)\n```\s*$/);
+  return m ? m[1].trim() : text;
+}
+
+function validateCaseMarkdown(md) {
+  const raw = String(md || '');
+  const parsed = matter(raw);
+  const data = parsed?.data || {};
+  const required = ['status', 'links', 'thread', 'date', 'subject', 'mailto', 'source_url', 'doc_id', 'fetched_at'];
+  for (const k of required) {
+    if (data[k] == null || data[k] === '') {
+      throw new Error(`Generated case missing required frontmatter field: ${k}`);
+    }
+  }
+  if (!parsed.content || parsed.content.trim().length < 200) {
+    throw new Error('Generated case body is too short.');
+  }
+  if (!/^#\s+/.test(parsed.content.trim())) {
+    throw new Error('Generated case body must start with a level-1 title (# ...).');
+  }
+}
+
+async function getNextCaseId(year) {
+  const yy = String(year);
+  await fs.mkdir(CASES_DIR, { recursive: true });
+  const entries = await fs.readdir(CASES_DIR);
+  const re = new RegExp(`^C-${yy}-(\\d{3})\\.md$`, 'i');
+  let max = 0;
+  for (const name of entries) {
+    const m = name.match(re);
+    if (!m) continue;
+    max = Math.max(max, Number(m[1]));
+  }
+  const next = String(max + 1).padStart(3, '0');
+  return `C-${yy}-${next}`;
+}
+
+async function appendPendingSeen(izon) {
+  const current = await loadJson(PENDING_SEEN_PATH, { izon: [] });
+  const seen = new Set(Array.isArray(current.izon) ? current.izon.map(String) : []);
+  if (izon) seen.add(String(izon));
+  await writeJson(PENDING_SEEN_PATH, { updated: nowIsoUtc(), izon: Array.from(seen).sort() });
+}
+
 async function loadJson(filePath, fallback) {
   try {
     const raw = await fs.readFile(filePath, 'utf8');
