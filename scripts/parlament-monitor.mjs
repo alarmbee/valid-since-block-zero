@@ -2,6 +2,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { XMLParser } from 'fast-xml-parser';
+import matter from 'gray-matter';
+import * as cheerio from 'cheerio';
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 const REPO_ROOT = process.cwd();
 
