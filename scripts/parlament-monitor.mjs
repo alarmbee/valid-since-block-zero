@@ -13,6 +13,28 @@ const BASE_URL = process.env.PARLAMENT_API_BASE || 'https://www.parlament.hu/cgi
 const LIST_URL = `${BASE_URL}/iromanyok.cgi?access_token=${encodeURIComponent(TOKEN ?? '')}`;
 
 const STATE_PATH = path.join(REPO_ROOT, '.cache', 'parlament-monitor', 'state.json');
+const PENDING_SEEN_PATH = path.join(REPO_ROOT, '.cache', 'parlament-monitor', 'seen-to-add.json');
+
+const DOCS_DIR = path.join(REPO_ROOT, 'docs');
+const CASES_DIR = path.join(DOCS_DIR, 'cases');
+
+// AI config (prefer GitHub Models; keep everything configurable via vars/secrets)
+const AI_API_BASE_URL = process.env.AI_API_BASE_URL || process.env.GITHUB_MODELS_BASE_URL || '';
+const AI_CHAT_COMPLETIONS_PATH = process.env.AI_CHAT_COMPLETIONS_PATH || '/v1/chat/completions';
+const AI_MODEL = process.env.AI_MODEL || '';
+const AI_API_KEY =
+  process.env.AI_API_KEY ||
+  (String(process.env.AI_USE_GITHUB_TOKEN || '').toLowerCase() === 'true' ? process.env.GITHUB_TOKEN : '') ||
+  '';
+const AI_TEMPERATURE = Number.isFinite(Number(process.env.AI_TEMPERATURE)) ? Number(process.env.AI_TEMPERATURE) : 0.2;
+const AI_MAX_TOKENS = Number.isFinite(Number(process.env.AI_MAX_TOKENS)) ? Number(process.env.AI_MAX_TOKENS) : 900;
+const AI_MAX_INPUT_CHARS = Number.isFinite(Number(process.env.AI_MAX_INPUT_CHARS))
+  ? Number(process.env.AI_MAX_INPUT_CHARS)
+  : 25_000;
+const AI_PDF_MAX_PAGES = Number.isFinite(Number(process.env.AI_PDF_MAX_PAGES)) ? Number(process.env.AI_PDF_MAX_PAGES) : 10;
+const AI_MAX_NEW_HITS = Number.isFinite(Number(process.env.AI_MAX_NEW_HITS)) ? Number(process.env.AI_MAX_NEW_HITS) : 1;
+const AI_PROMPT_PATH =
+  process.env.AI_PROMPT_PATH || path.join(REPO_ROOT, 'scripts', 'prompts', 'parlament-case.md');
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
