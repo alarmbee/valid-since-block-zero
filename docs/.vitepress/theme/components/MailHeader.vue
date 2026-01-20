@@ -16,13 +16,22 @@ const displayDate = computed(() => props.date || frontmatter.value.date)
 const displaySubject = computed(() => props.subject || frontmatter.value.subject)
 const displayStatus = computed(() => props.status || frontmatter.value.status)
 
-type CaseStatusKey = 'open' | 'answered' | 'followup' | 'unknown'
+type CaseStatusKey = 'open' | 'answered' | 'closed' | 'followup' | 'unknown'
 
 function caseStatusKey(status: unknown): CaseStatusKey {
   if (!status) return 'unknown'
   const raw = String(status).trim().toLowerCase()
   if (raw === 'nyitott' || raw === 'open') return 'open'
   if (raw === 'megválaszolt' || raw === 'megvalaszolt' || raw === 'answered' || raw === 'reply_only') return 'answered'
+  if (
+    raw === 'válasz nélkül lezárva' ||
+    raw === 'valasz nelkul lezarva' ||
+    raw === 'lezárt' ||
+    raw === 'lezart' ||
+    raw === 'closed'
+  ) {
+    return 'closed'
+  }
   if (
     raw === 'további kérdéseket felvető' ||
     raw === 'tovabbi kerdeseket felveto' ||
@@ -38,6 +47,7 @@ function caseStatusLabel(status: unknown): string {
   const key = caseStatusKey(status)
   if (key === 'open') return 'nyitott'
   if (key === 'answered') return 'megválaszolt'
+  if (key === 'closed') return 'válasz nélkül lezárva'
   if (key === 'followup') return 'további kérdéseket felvető'
   return typeof status === 'string' && status.trim() ? status : 'ismeretlen'
 }
@@ -135,6 +145,10 @@ const statusLabel = computed(() => caseStatusLabel(displayStatus.value))
 
 .status--answered .status-dot {
   background-color: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+.status--closed .status-dot {
+  background-color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 
 .status--followup .status-dot {

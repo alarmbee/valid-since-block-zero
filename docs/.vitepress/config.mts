@@ -14,13 +14,22 @@ function escapeHtml(value: unknown) {
     .replace(/'/g, '&#39;');
 }
 
-type CaseStatusKey = 'open' | 'answered' | 'followup' | 'unknown';
+type CaseStatusKey = 'open' | 'answered' | 'closed' | 'followup' | 'unknown';
 
 function caseStatusKey(status: unknown): CaseStatusKey {
   if (!status) return 'unknown';
   const raw = String(status).trim().toLowerCase();
   if (raw === 'nyitott' || raw === 'open') return 'open';
   if (raw === 'megválaszolt' || raw === 'megvalaszolt' || raw === 'answered' || raw === 'reply_only') return 'answered';
+  if (
+    raw === 'válasz nélkül lezárva' ||
+    raw === 'valasz nelkul lezarva' ||
+    raw === 'lezárt' ||
+    raw === 'lezart' ||
+    raw === 'closed'
+  ) {
+    return 'closed';
+  }
   if (
     raw === 'további kérdéseket felvető' ||
     raw === 'tovabbi kerdeseket felveto' ||
@@ -36,6 +45,7 @@ function caseStatusLabel(status: unknown): string {
   const key = caseStatusKey(status);
   if (key === 'open') return 'nyitott';
   if (key === 'answered') return 'megválaszolt';
+  if (key === 'closed') return 'válasz nélkül lezárva';
   if (key === 'followup') return 'további kérdéseket felvető';
   return typeof status === 'string' && status.trim() ? status : 'ismeretlen';
 }
@@ -75,6 +85,7 @@ function questionStatusIconClass(key: QuestionStatusKey): string {
 function caseStatusIconClass(key: CaseStatusKey): string {
   if (key === 'open') return 'fa-solid fa-hourglass-half';
   if (key === 'answered') return 'fa-solid fa-circle-check';
+  if (key === 'closed') return 'fa-solid fa-lock';
   if (key === 'followup') return 'fa-solid fa-circle-question';
   return 'fa-regular fa-circle-question';
 }

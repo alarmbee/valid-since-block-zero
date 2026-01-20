@@ -13,23 +13,27 @@ const counts = computed(() => {
   let open = 0;
   let followup = 0;
   let answered = 0;
+  let closed = 0;
 
   for (const item of caseItems.value) {
     const key = caseStatusKey(item?.status);
     if (key === 'answered') answered += 1;
+    else if (key === 'closed') closed += 1;
     else if (key === 'followup') followup += 1;
     else open += 1;
   }
 
-  const total = open + followup + answered;
+  const total = open + followup + answered + closed;
   return {
     open,
     followup,
     answered,
+    closed,
     total,
     openPct: total ? (open / total) * 100 : 0,
     followupPct: total ? (followup / total) * 100 : 0,
-    answeredPct: total ? (answered / total) * 100 : 0
+    answeredPct: total ? (answered / total) * 100 : 0,
+    closedPct: total ? (closed / total) * 100 : 0
   };
 });
 </script>
@@ -46,11 +50,12 @@ const counts = computed(() => {
     <div
       class="vsbz-case-status__bar"
       role="img"
-      :aria-label="`Nyitott: ${counts.open}, további kérdéseket felvető: ${counts.followup}, megválaszolt: ${counts.answered}`"
+      :aria-label="`Nyitott: ${counts.open}, további kérdéseket felvető: ${counts.followup}, megválaszolt: ${counts.answered}, válasz nélkül lezárva: ${counts.closed}`"
     >
       <div class="vsbz-case-status__seg vsbz-case-status__seg--open" :style="{ width: `${counts.openPct}%` }" />
       <div class="vsbz-case-status__seg vsbz-case-status__seg--followup" :style="{ width: `${counts.followupPct}%` }" />
       <div class="vsbz-case-status__seg vsbz-case-status__seg--answered" :style="{ width: `${counts.answeredPct}%` }" />
+      <div class="vsbz-case-status__seg vsbz-case-status__seg--closed" :style="{ width: `${counts.closedPct}%` }" />
     </div>
 
     <div class="vsbz-case-status__legend" aria-label="Státusz bontás">
@@ -68,6 +73,11 @@ const counts = computed(() => {
         <span class="vsbz-case-status__dot vsbz-case-status__dot--answered" aria-hidden="true" />
         <span class="vsbz-case-status__label">Megválaszolt</span>
         <span class="vsbz-case-status__value">{{ counts.answered }}</span>
+      </div>
+      <div class="vsbz-case-status__item">
+        <span class="vsbz-case-status__dot vsbz-case-status__dot--closed" aria-hidden="true" />
+        <span class="vsbz-case-status__label">Válasz nélkül lezárva</span>
+        <span class="vsbz-case-status__value">{{ counts.closed }}</span>
       </div>
     </div>
   </section>
@@ -130,9 +140,13 @@ const counts = computed(() => {
   background: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 
+.vsbz-case-status__seg--closed {
+  background: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
 .vsbz-case-status__legend {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem 0.75rem;
   margin-top: 0.75rem;
 }
@@ -171,6 +185,10 @@ const counts = computed(() => {
 
 .vsbz-case-status__dot--answered {
   background: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+.vsbz-case-status__dot--closed {
+  background: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 
 .vsbz-case-status__label {

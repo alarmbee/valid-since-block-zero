@@ -1,4 +1,4 @@
-export type CaseStatusKey = 'open' | 'answered' | 'followup' | 'unknown';
+export type CaseStatusKey = 'open' | 'answered' | 'closed' | 'followup' | 'unknown';
 
 function normalizeStatus(status: unknown): string {
   if (!status) return '';
@@ -9,8 +9,9 @@ const CASE_STATUS_MATCHERS: Array<{ key: CaseStatusKey; values: string[] }> = [
   { key: 'open', values: ['nyitott', 'open'] },
   {
     key: 'answered',
-    values: ['megválaszolt', 'megvalaszolt', 'answered', 'reply_only', 'closed'],
+    values: ['megválaszolt', 'megvalaszolt', 'answered', 'reply_only'],
   },
+  { key: 'closed', values: ['válasz nélkül lezárva', 'valasz nelkul lezarva', 'lezárt', 'lezart', 'closed'] },
   {
     key: 'followup',
     values: [
@@ -27,6 +28,7 @@ const CASE_STATUS_MATCHERS: Array<{ key: CaseStatusKey; values: string[] }> = [
 const CASE_STATUS_LABELS: Record<CaseStatusKey, string> = {
   open: 'nyitott',
   answered: 'megválaszolt',
+  closed: 'válasz nélkül lezárva',
   followup: 'további kérdéseket felvető',
   unknown: 'ismeretlen',
 };
