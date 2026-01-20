@@ -64,6 +64,8 @@ async function collectIdsByKind() {
   };
 
   const idsByKind = { question: [], template: [], case: [], conclusion: [] };
+  const seenPathsById = new Map();
+  const duplicateIds = [];
 
   for (const root of Object.values(roots)) {
     try {
@@ -81,11 +83,25 @@ async function collectIdsByKind() {
         const parsed = matter(raw);
         const id = deriveId(parsed.data, filePath);
 
+        const prevPath = seenPathsById.get(id);
+        if (prevPath) {
+          duplicateIds.push({ id, first: prevPath, duplicate: filePath });
+          continue;
+        }
+        seenPathsById.set(id, filePath);
+
         idsByKind[kind].push(id);
       }
     } catch {
       // Folder may not exist yet; ignore.
     }
+  }
+
+  if (duplicateIds.length > 0) {
+    const details = duplicateIds
+      .map((d) => `- ${d.id}: ${d.first} AND ${d.duplicate}`)
+      .join('\n');
+    throw new Error(`Duplicate frontmatter id values detected (IDs must be unique):\n${details}`);
   }
 
   return {

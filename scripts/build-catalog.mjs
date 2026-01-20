@@ -156,6 +156,8 @@ async function buildCatalog() {
 
   const items = [];
   const byId = {};
+  const seenPathsById = new Map();
+  const duplicateIds = [];
 
   for (const root of roots) {
     try {
@@ -173,10 +175,12 @@ async function buildCatalog() {
         const parsed = matter(raw);
         const id = deriveId(parsed.data, filePath);
 
-        if (byId[id]) {
-          // Keep the first occurrence; later ones are likely duplicates.
+        const prevPath = seenPathsById.get(id);
+        if (prevPath) {
+          duplicateIds.push({ id, first: prevPath, duplicate: filePath });
           continue;
         }
+        seenPathsById.set(id, filePath);
 
         const route = `/${toPosixPath(docsRelativePath).replace(/\.md$/i, '')}`;
         const title = deriveTitle(parsed.data, id);
@@ -203,6 +207,13 @@ async function buildCatalog() {
     } catch {
       // Folder may not exist yet; ignore.
     }
+  }
+
+  if (duplicateIds.length > 0) {
+    const details = duplicateIds
+      .map((d) => `- ${d.id}: ${d.first} AND ${d.duplicate}`)
+      .join('\n');
+    throw new Error(`Duplicate frontmatter id values detected (IDs must be unique):\n${details}`);
   }
 
   const backlinks = {};
