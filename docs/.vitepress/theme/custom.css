@@ -155,6 +155,10 @@
   color: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--closed .vsbz-status-fa {
+  color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
 .VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--followup .vsbz-status-fa {
   color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
@@ -180,6 +184,10 @@
 
 .VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--answered .vsbz-status-dot {
   background-color: var(--vp-c-tip-1, var(--vp-c-green-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--closed .vsbz-status-dot {
+  background-color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 
 .VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--followup .vsbz-status-dot {
