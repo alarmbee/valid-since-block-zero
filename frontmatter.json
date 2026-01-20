@@ -154,6 +154,7 @@
           "choices": [
             "nyitott",
             "megválaszolt",
+            "válasz nélkül lezárva",
             "további kérdéseket felvető"
           ]
         },
@@ -454,6 +455,7 @@
           "choices": [
             "nyitott",
             "megválaszolt",
+            "válasz nélkül lezárva",
             "további kérdéseket felvető"
           ]
         },

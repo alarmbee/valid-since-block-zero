@@ -71,9 +71,13 @@ function normalizeCaseStatus(value) {
   if (!value) return null;
   const raw = String(value).trim().toLowerCase();
 
+  // New canonical HU label
+  if (raw === 'válasz nélkül lezárva' || raw === 'valasz nelkul lezarva') return 'válasz nélkül lezárva';
+
   // Canonical HU labels
   if (raw === 'nyitott') return 'nyitott';
   if (raw === 'megválaszolt' || raw === 'megvalaszolt') return 'megválaszolt';
+  if (raw === 'lezárt' || raw === 'lezart') return 'válasz nélkül lezárva';
   if (raw === 'további kérdéseket felvető' || raw === 'tovabbi kerdeseket felveto') {
     return 'további kérdéseket felvető';
   }
@@ -81,6 +85,7 @@ function normalizeCaseStatus(value) {
   // Backward-compatible aliases (older drafts)
   if (raw === 'open') return 'nyitott';
   if (raw === 'answered') return 'megválaszolt';
+  if (raw === 'closed') return 'válasz nélkül lezárva';
   if (raw === 'followup' || raw === 'follow_up') return 'további kérdéseket felvető';
   if (raw === 'reply_only') return 'megválaszolt';
 
