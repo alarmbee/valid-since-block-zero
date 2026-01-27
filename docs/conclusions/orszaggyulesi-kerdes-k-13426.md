@@ -8,7 +8,7 @@ draft: false
 tags: ["kriptovalidáció", "LXVII", "MiCA", "SZTFH", "versenyjog", "GVH", "adatbiztonság", "nemzetbiztonság", "országgyűlés"]
 categories: ["következtetés"]
 links:
-  questions: ["Q-002", "Q-003"]
+  questions: ["Q-002", "Q-003", "Q-006"]
   templates: []
   cases: []
   conclusions: ["R-2026-001", "R-2026-002", "R-2026-003"]
