@@ -11,7 +11,7 @@ links:
   questions: ["Q-002", "Q-003"]
   templates: []
   cases: []
-  conclusions: ["R-2026-001", "R-2026-002"]
+  conclusions: ["R-2026-001", "R-2026-002", "R-2026-011"]
 ---
 
 ::: info Forrás (PDF)

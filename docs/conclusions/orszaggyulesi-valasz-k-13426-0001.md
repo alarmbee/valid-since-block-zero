@@ -11,22 +11,20 @@ links:
   questions: ["Q-002", "Q-003", "Q-006"]
   templates: []
   cases: []
-  conclusions: ["R-2026-004", "R-2026-001", "R-2026-002", "R-2026-003"]
+  conclusions: ["R-2026-004", "R-2026-001", "R-2026-002", "R-2026-003", "R-2026-011"]
 ---
 
 ::: info Forrás (PDF)
 - Dokumentum: Országgyűlési írásbeli választ igénylő kérdésre adott válasz, irományszám: **K/13426/1**
 - Link: https://www.parlament.hu/irom42/13426/13426-0001.pdf
+- Előzmény PDF: https://www.parlament.hu/irom42/13426/13426.pdf
 - Válasz dátuma (a válasz szerint): **2026-01-27**
 - Utolsó ellenőrzés: **2026-01-28**
 :::
 
-::: info Kapcsolódó dokumentum
-- Előzmény (kérdés összefoglaló): lásd a kapcsolódó Következtetést: **R-2026-004**
-- Előzmény PDF: https://www.parlament.hu/irom42/13426/13426.pdf
-:::
+## Előzmények
 
-## Rövid jelentés (változtatás nélkül)
+A K/13426 számú országgyűlési írásbeli kérdésre adott K/13426-0001 számú miniszteri választ vizsgálja ez a jelentés, különös tekintettel arra, hogy a válasz hogyan kezeli a kérdésben felvetett aggályokat a kriptovalidációs modell gyakorlati alkalmazhatóságával, a versenyjogi és adatbiztonsági kockázatokkal kapcsolatban.
 
 ## Jelentés – K/13426. számú írásbeli kérdés és a K/13426/1. számú miniszteri válasz összevetése
 
