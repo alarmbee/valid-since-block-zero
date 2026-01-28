@@ -33,8 +33,7 @@ A jelentés megállapításai alapján a K/13436/1 miniszteri válasz szerkezete
 Az oldal tájékoztató jellegű, és nem minősül jogi tanácsadásnak.
 :::
 
-## Jelentés (változtatás nélkül, kiemelésekkel)
-
+## Jelentés 
 **Jelentés – K/13436/1 miniszteri válasz értékelése és összevetése a K/13426/1 válasszal**
 
 _(VSBZ publikálásra szerkesztett, szigorúbb hangvételű, de objektív összefoglaló)_
