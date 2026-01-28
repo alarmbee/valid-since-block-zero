@@ -36,8 +36,6 @@ Az oldal tájékoztató jellegű, és nem minősül jogi tanácsadásnak.
 ## Jelentés 
 **Jelentés – K/13436/1 miniszteri válasz értékelése és összevetése a K/13426/1 válasszal**
 
-_(VSBZ publikálásra szerkesztett, szigorúbb hangvételű, de objektív összefoglaló)_
-
 **1. Kiindulópont és cél**
 
 Jelen jelentés a K/13436 számú országgyűlési írásbeli kérdésre adott K/13436-0001 számú miniszteri választ értelmezi, és összeveti a korábban vizsgált K/13426 ügyben adott K/13426-0001 miniszteri válasszal.
