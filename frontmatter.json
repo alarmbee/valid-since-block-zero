@@ -2,6 +2,190 @@
   "$schema": "https://frontmatter.codes/frontmatter.schema.json",
   "frontMatter.taxonomy.contentTypes": [
     {
+      "name": "faq",
+      "pageBundle": false,
+      "defaultFileName": "{{id}}",
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "default": "{{id}}"
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "title": "Publishing date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
+        },
+        {
+          "title": "Content preview",
+          "name": "preview",
+          "type": "image"
+        },
+        {
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "boolean"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
+        },
+        {
+          "title": "id",
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "links",
+          "name": "links",
+          "type": "fields",
+          "fields": [
+            {
+              "title": "questions",
+              "name": "questions",
+              "type": "choice",
+              "choices": [
+                "Q-002",
+                "Q-003",
+                "Q-004",
+                "Q-005",
+                "Q-006",
+                "Q-007"
+              ]
+            },
+            {
+              "title": "templates",
+              "name": "templates",
+              "type": "choice",
+              "choices": [
+                "T-002",
+                "T-003",
+                "T-004",
+                "T-005"
+              ],
+              "fields": []
+            },
+            {
+              "title": "cases",
+              "name": "cases",
+              "type": "choice",
+              "choices": [
+                "C-2025-001",
+                "C-2025-002",
+                "C-2026-001",
+                "C-2026-002",
+                "C-2026-003",
+                "C-2026-004",
+                "C-2026-005",
+                "C-2026-006",
+                "C-2026-007",
+                "C-2026-008",
+                "C-2026-009",
+                "C-2026-010"
+              ],
+              "fields": []
+            },
+            {
+              "title": "conclusions",
+              "name": "conclusions",
+              "type": "choice",
+              "choices": [
+                "R-2026-001",
+                "R-2026-002",
+                "R-2026-003",
+                "R-2026-004",
+                "R-2026-005",
+                "R-2026-006",
+                "R-2026-007",
+                "R-2026-008",
+                "R-2026-009",
+                "R-2026-010",
+                "R-2026-011"
+              ],
+              "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
+            },
+            {
+              "title": "thread",
+              "name": "thread",
+              "type": "fields",
+              "fields": [
+                {
+                  "title": "previous",
+                  "name": "previous",
+                  "type": "choice",
+                  "choices": [
+                    "C-2025-001",
+                    "C-2025-002",
+                    "C-2026-001",
+                    "C-2026-002",
+                    "C-2026-003",
+                    "C-2026-004",
+                    "C-2026-005",
+                    "C-2026-006",
+                    "C-2026-007",
+                    "C-2026-008",
+                    "C-2026-009",
+                    "C-2026-010"
+                  ]
+                },
+                {
+                  "title": "next",
+                  "name": "next",
+                  "type": "choice",
+                  "choices": [
+                    "C-2025-001",
+                    "C-2025-002",
+                    "C-2026-001",
+                    "C-2026-002",
+                    "C-2026-003",
+                    "C-2026-004",
+                    "C-2026-005",
+                    "C-2026-006",
+                    "C-2026-007",
+                    "C-2026-008",
+                    "C-2026-009",
+                    "C-2026-010"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "status",
+          "name": "status",
+          "type": "choice",
+          "choices": [
+            "nyitott",
+            "megválaszolt",
+            "válasz nélkül lezárva",
+            "további kérdéseket felvető"
+          ]
+        }
+      ]
+    },
+    {
       "name": "default",
       "pageBundle": false,
       "defaultFileName": "{{id}}",
@@ -118,6 +302,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             },
             {
               "title": "thread",
@@ -317,6 +507,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             }
           ]
         },
@@ -449,6 +645,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             },
             {
               "title": "thread",
@@ -630,6 +832,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             }
           ]
         },

@@ -2,13 +2,28 @@
 // The actual data is generated at build time into `catalog.generated.ts`.
 import { catalog as generatedCatalog } from './catalog.generated';
 
-export type CatalogKind = 'question' | 'template' | 'case' | 'conclusion';
+export type CatalogKind = 'question' | 'template' | 'case' | 'conclusion' | 'faq';
+
+export type CatalogBranchLink = {
+	text: string;
+	targetId: string;
+};
+
+export type CatalogBranches = Record<string, CatalogBranchLink[]>;
+
+export type CatalogRelatedLinks = {
+	questions: string[];
+	templates: string[];
+	cases: string[];
+	conclusions: string[];
+};
 
 export type CatalogLinks = {
 	questions: string[];
 	templates: string[];
 	cases: string[];
 	conclusions: string[];
+	branches: CatalogBranches;
 };
 
 export type CatalogThread = {
@@ -27,13 +42,25 @@ export type CatalogItem = {
 	status: string | null;
 };
 
-export type CatalogBacklinks = Record<string, CatalogLinks>;
+export type CatalogBacklinks = Record<string, CatalogRelatedLinks>;
+
+export type CatalogBranchEdges = Record<string, CatalogBranches>;
+
+export type CatalogBranchBacklink = {
+	sourceId: string;
+	popupId: string;
+	text: string;
+};
+
+export type CatalogBranchBacklinks = Record<string, CatalogBranchBacklink[]>;
 
 export type Catalog = {
 	generatedAt: string;
 	items: CatalogItem[];
 	byId: Record<string, CatalogItem>;
 	backlinks: CatalogBacklinks;
+	branchEdges: CatalogBranchEdges;
+	branchBacklinks: CatalogBranchBacklinks;
 };
 
 export const catalog: Catalog = generatedCatalog as unknown as Catalog;

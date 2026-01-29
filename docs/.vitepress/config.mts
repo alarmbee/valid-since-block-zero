@@ -174,6 +174,23 @@ function itemsForConclusions() {
     });
 }
 
+function itemsForFaq() {
+  return catalog.items
+    .filter((i) => i.kind === 'faq')
+    .slice()
+    .sort(sortById)
+    .map((i) => {
+      const text = [
+        '<span class="vsbz-sidebar-card">',
+        `  <span class="vsbz-sidebar-card__id">${escapeHtml(i.id)}</span>`,
+        `  <span class="vsbz-sidebar-card__title">${escapeHtml(i.title)}</span>`,
+        '</span>'
+      ].join('\n');
+
+      return { text, link: i.route };
+    });
+}
+
 type ThemeConfig = DefaultTheme.Config & {
   giscus?: {
     repo: string;
@@ -202,6 +219,7 @@ const themeConfig: ThemeConfig = {
   logo: "/favicon.svg",
 
   nav: [
+    { text: "GYIK", link: "/faq/" },
     { text: "Kérdések", link: "/questions/" },
     { text: "Email minták", link: "/templates/" },
     { text: "Esetek", link: "/cases/" },
@@ -219,6 +237,11 @@ const themeConfig: ThemeConfig = {
         { text: "Hogy tudsz segíteni?", link: "/hogy-tudsz-segiteni" },
         { text: "Forrásanyagok", link: "/hivatkozasok" }
       ]
+    },
+    {
+      text: "GYIK",
+      collapsed: true,
+      items: [{ text: "GYIK tájékoztató", link: "/faq/" }, ...itemsForFaq()]
     },
     {
       text: "Kérdések",

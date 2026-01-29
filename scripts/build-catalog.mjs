@@ -39,17 +39,46 @@ function classifyKind(docsRelativePath) {
   if (rel.startsWith('templates/')) return 'template';
   if (rel.startsWith('cases/')) return 'case';
   if (rel.startsWith('conclusions/')) return 'conclusion';
+  if (rel.startsWith('faq/')) return 'faq';
   return null;
 }
 
 function normalizeLinks(input) {
   const links = input && typeof input === 'object' ? input : {};
   const normalizeArray = (value) => (Array.isArray(value) ? value.filter(Boolean).map(String) : []);
+
+  const normalizeBranches = (value) => {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return {};
+
+    const result = {};
+    for (const [popupIdRaw, popupValue] of Object.entries(value)) {
+      const popupId = String(popupIdRaw || '').trim();
+      if (!popupId) continue;
+      if (!popupValue || typeof popupValue !== 'object' || Array.isArray(popupValue)) continue;
+
+      const entries = [];
+      for (const [textRaw, targetIdRaw] of Object.entries(popupValue)) {
+        const text = String(textRaw || '').trim();
+        const targetId = String(targetIdRaw || '').trim();
+        if (!text || !targetId) continue;
+        entries.push({ text, targetId });
+      }
+
+      if (entries.length > 0) {
+        entries.sort((a, b) => a.text.localeCompare(b.text));
+        result[popupId] = entries;
+      }
+    }
+
+    return result;
+  };
+
   return {
     questions: normalizeArray(links.questions),
     templates: normalizeArray(links.templates),
     cases: normalizeArray(links.cases),
-    conclusions: normalizeArray(links.conclusions)
+    conclusions: normalizeArray(links.conclusions),
+    branches: normalizeBranches(links.branches)
   };
 }
 
@@ -151,7 +180,8 @@ async function buildCatalog() {
     path.join(DOCS_DIR, 'questions'),
     path.join(DOCS_DIR, 'templates'),
     path.join(DOCS_DIR, 'cases'),
-    path.join(DOCS_DIR, 'conclusions')
+    path.join(DOCS_DIR, 'conclusions'),
+    path.join(DOCS_DIR, 'faq')
   ];
 
   const items = [];
@@ -222,6 +252,14 @@ async function buildCatalog() {
     return backlinks[targetId];
   };
 
+  const branchEdges = {};
+  const branchBacklinks = {};
+
+  const ensureBranchBacklinks = (targetId) => {
+    if (!branchBacklinks[targetId]) branchBacklinks[targetId] = [];
+    return branchBacklinks[targetId];
+  };
+
   const sourceGroupForKind = (kind) => {
     if (kind === 'question') return 'questions';
     if (kind === 'template') return 'templates';
@@ -241,6 +279,21 @@ async function buildCatalog() {
     for (const targetId of item.links.templates) ensureBacklinks(targetId)[sourceGroup].push(item.id);
     for (const targetId of item.links.cases) ensureBacklinks(targetId)[sourceGroup].push(item.id);
     for (const targetId of item.links.conclusions) ensureBacklinks(targetId)[sourceGroup].push(item.id);
+
+    const branches = item.links.branches;
+    if (branches && typeof branches === 'object') {
+      const edgeRecord = {};
+      for (const [popupId, entries] of Object.entries(branches)) {
+        if (!Array.isArray(entries) || entries.length === 0) continue;
+        edgeRecord[popupId] = entries.map((e) => ({ text: String(e.text), targetId: String(e.targetId) }));
+        for (const entry of edgeRecord[popupId]) {
+          ensureBranchBacklinks(entry.targetId).push({ sourceId: item.id, popupId, text: entry.text });
+        }
+      }
+      if (Object.keys(edgeRecord).length > 0) {
+        branchEdges[item.id] = edgeRecord;
+      }
+    }
   }
 
   // De-dup backlinks deterministically
@@ -251,13 +304,31 @@ async function buildCatalog() {
     backlinks[key].conclusions = Array.from(new Set(backlinks[key].conclusions)).sort();
   }
 
+  // De-dup/sort branch backlinks deterministically
+  for (const targetId of Object.keys(branchBacklinks)) {
+    const unique = new Map();
+    for (const ref of branchBacklinks[targetId]) {
+      const key = `${ref.sourceId}::${ref.popupId}::${ref.text}`;
+      unique.set(key, ref);
+    }
+    branchBacklinks[targetId] = Array.from(unique.values()).sort((a, b) => {
+      const bySource = String(a.sourceId).localeCompare(String(b.sourceId));
+      if (bySource !== 0) return bySource;
+      const byPopup = String(a.popupId).localeCompare(String(b.popupId));
+      if (byPopup !== 0) return byPopup;
+      return String(a.text).localeCompare(String(b.text));
+    });
+  }
+
   items.sort((a, b) => a.id.localeCompare(b.id));
 
   return {
     generatedAt: new Date().toISOString(),
     items,
     byId,
-    backlinks
+    backlinks,
+    branchEdges,
+    branchBacklinks
   };
 }
 

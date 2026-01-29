@@ -6,7 +6,7 @@ import { catalog } from '../../data/catalog';
 import { caseStatusKey, caseStatusLabel } from '../utils/caseStatus';
 import { questionStatusKey, questionStatusLabel } from '../utils/questionStatus';
 
-type Kind = 'question' | 'template' | 'case';
+type Kind = 'question' | 'template' | 'case' | 'faq';
 
 // NOTE: "conclusion" is a fourth structured doc type next to Q/T/C.
 type KindWithConclusions = Kind | 'conclusion';
