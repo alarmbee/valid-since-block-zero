@@ -2,8 +2,9 @@
 import { computed } from 'vue';
 import { useData, withBase } from 'vitepress';
 import { catalog } from '../../data/catalog';
+import { appendHash, parseTargetRef } from '../utils/targetRef';
 
-type RelatedKind = 'questions' | 'templates' | 'cases' | 'conclusions';
+type RelatedKind = 'questions' | 'templates' | 'cases' | 'conclusions' | 'faqs';
 
 const { frontmatter, page } = useData();
 
@@ -13,7 +14,8 @@ const isStructuredDoc = computed(() => {
     fp.startsWith('questions/') ||
     fp.startsWith('templates/') ||
     fp.startsWith('cases/') ||
-    fp.startsWith('conclusions/')
+    fp.startsWith('conclusions/') ||
+    fp.startsWith('faq/')
   );
 });
 
@@ -28,7 +30,8 @@ const rawLinks = computed(() => {
     questions: Array.isArray(links?.questions) ? links.questions.map(String) : [],
     templates: Array.isArray(links?.templates) ? links.templates.map(String) : [],
     cases: Array.isArray(links?.cases) ? links.cases.map(String) : [],
-    conclusions: Array.isArray(links?.conclusions) ? links.conclusions.map(String) : []
+    conclusions: Array.isArray(links?.conclusions) ? links.conclusions.map(String) : [],
+    faqs: Array.isArray(links?.faqs) ? links.faqs.map(String) : Array.isArray(links?.faq) ? links.faq.map(String) : []
   } satisfies Record<RelatedKind, string[]>;
 });
 
@@ -38,34 +41,48 @@ function uniqSorted(values: string[]) {
 
 const relatedIds = computed(() => {
   const id = currentId.value;
-  const backlinks = (catalog as any).backlinks?.[id] ?? { questions: [], templates: [], cases: [], conclusions: [] };
+  const backlinks = (catalog as any).backlinks?.[id] ?? { questions: [], templates: [], cases: [], conclusions: [], faqs: [] };
   return {
     questions: uniqSorted([...rawLinks.value.questions, ...(backlinks.questions ?? []).map(String)]),
     templates: uniqSorted([...rawLinks.value.templates, ...(backlinks.templates ?? []).map(String)]),
     cases: uniqSorted([...rawLinks.value.cases, ...(backlinks.cases ?? []).map(String)]),
-    conclusions: uniqSorted([...rawLinks.value.conclusions, ...(backlinks.conclusions ?? []).map(String)])
+    conclusions: uniqSorted([...rawLinks.value.conclusions, ...(backlinks.conclusions ?? []).map(String)]),
+    faqs: uniqSorted([...rawLinks.value.faqs, ...(backlinks.faqs ?? []).map(String)])
   } satisfies Record<RelatedKind, string[]>;
 });
 
 const resolved = computed(() => {
   const byId = (catalog as any).byId ?? {};
-  const resolveOne = (id: string) => {
-    const item = byId[id];
-    if (!item) return { id, title: id, route: '', missing: true };
-    return { id, title: item.title ?? id, route: item.route ?? '', missing: false };
+  const resolveOne = (targetRef: string) => {
+    const parsed = parseTargetRef(targetRef);
+    const item = parsed.id ? byId[parsed.id] : null;
+    if (!item) return { id: parsed.ref || targetRef, title: parsed.ref || targetRef, route: '', missing: true };
+    return {
+      id: parsed.ref || targetRef,
+      title: item.title ?? parsed.id,
+      route: appendHash(item.route ?? '', parsed.hash),
+      missing: false
+    };
   };
 
   return {
     questions: relatedIds.value.questions.map(resolveOne),
     templates: relatedIds.value.templates.map(resolveOne),
     cases: relatedIds.value.cases.map(resolveOne),
-    conclusions: relatedIds.value.conclusions.map(resolveOne)
+    conclusions: relatedIds.value.conclusions.map(resolveOne),
+    faqs: relatedIds.value.faqs.map(resolveOne)
   };
 });
 
 const hasAnything = computed(() => {
   const r = resolved.value;
-  return r.questions.length > 0 || r.templates.length > 0 || r.cases.length > 0 || r.conclusions.length > 0;
+  return (
+    r.questions.length > 0 ||
+    r.templates.length > 0 ||
+    r.cases.length > 0 ||
+    r.conclusions.length > 0 ||
+    r.faqs.length > 0
+  );
 });
 </script>
 
@@ -125,6 +142,22 @@ const hasAnything = computed(() => {
       <h3 class="vsbz-group-title">Kapcsolódó következtetések</h3>
       <ul class="vsbz-link-list">
         <li v-for="item in resolved.conclusions" :key="item.id" class="vsbz-link-item">
+          <a v-if="!item.missing" :href="withBase(item.route)" class="vsbz-card-link">
+            <span class="vsbz-card-id">{{ item.id }}</span>
+            <span class="vsbz-card-title">{{ item.title }}</span>
+          </a>
+          <div v-else class="vsbz-card-missing">
+            <span class="vsbz-card-id">{{ item.id }}</span>
+            <span class="vsbz-card-note">(Hiányzó hivatkozás)</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div v-if="resolved.faqs.length" class="vsbz-related__group">
+      <h3 class="vsbz-group-title">Kapcsolódó GYIK</h3>
+      <ul class="vsbz-link-list">
+        <li v-for="item in resolved.faqs" :key="item.id" class="vsbz-link-item">
           <a v-if="!item.missing" :href="withBase(item.route)" class="vsbz-card-link">
             <span class="vsbz-card-id">{{ item.id }}</span>
             <span class="vsbz-card-title">{{ item.title }}</span>

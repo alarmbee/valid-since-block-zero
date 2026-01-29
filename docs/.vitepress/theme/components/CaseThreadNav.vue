@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useData, withBase } from 'vitepress';
 import { catalog } from '../../data/catalog';
+import { appendHash, parseTargetRef } from '../utils/targetRef';
 
 const { frontmatter, page } = useData();
 
@@ -22,12 +23,18 @@ const currentId = computed(() => {
   return id ? String(id) : '';
 });
 
-function resolveCase(id: string): ThreadLink {
-  if (!id) return null;
+function resolveCase(targetRef: string): ThreadLink {
+  const parsed = parseTargetRef(targetRef);
+  if (!parsed.id) return null;
   const byId = (catalog as any).byId ?? {};
-  const item = byId[id];
-  if (!item) return { id, title: id, route: '', missing: true };
-  return { id, title: item.title ?? id, route: item.route ?? '', missing: false };
+  const item = byId[parsed.id];
+  if (!item) return { id: parsed.ref || parsed.id, title: parsed.ref || parsed.id, route: '', missing: true };
+  return {
+    id: parsed.ref || parsed.id,
+    title: item.title ?? parsed.id,
+    route: appendHash(item.route ?? '', parsed.hash),
+    missing: false
+  };
 }
 
 function findDerivedNeighbor(direction: 'previous' | 'next'): string {
@@ -36,11 +43,19 @@ function findDerivedNeighbor(direction: 'previous' | 'next'): string {
   if (!here) return '';
 
   if (direction === 'next') {
-    const nextItem = items.find((i: any) => i?.kind === 'case' && i?.thread?.previous === here);
+    const nextItem = items.find((i: any) => {
+      if (i?.kind !== 'case') return false;
+      const prev = parseTargetRef(i?.thread?.previous ?? '').id;
+      return prev === here;
+    });
     return nextItem?.id ? String(nextItem.id) : '';
   }
 
-  const prevItem = items.find((i: any) => i?.kind === 'case' && i?.thread?.next === here);
+  const prevItem = items.find((i: any) => {
+    if (i?.kind !== 'case') return false;
+    const next = parseTargetRef(i?.thread?.next ?? '').id;
+    return next === here;
+  });
   return prevItem?.id ? String(prevItem.id) : '';
 }
 
@@ -51,13 +66,15 @@ const thread = computed(() => {
 });
 
 const previousId = computed(() => {
-  const explicit = thread.value?.previous ?? '';
-  return explicit ? String(explicit) : findDerivedNeighbor('previous');
+  const explicitRef = thread.value?.previous ?? '';
+  const parsed = parseTargetRef(explicitRef);
+  return parsed.id ? parsed.ref : findDerivedNeighbor('previous');
 });
 
 const nextId = computed(() => {
-  const explicit = thread.value?.next ?? '';
-  return explicit ? String(explicit) : findDerivedNeighbor('next');
+  const explicitRef = thread.value?.next ?? '';
+  const parsed = parseTargetRef(explicitRef);
+  return parsed.id ? parsed.ref : findDerivedNeighbor('next');
 });
 
 const previous = computed(() => resolveCase(previousId.value));

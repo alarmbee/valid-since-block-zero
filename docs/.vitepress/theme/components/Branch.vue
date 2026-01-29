@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useData, withBase } from 'vitepress';
 import { catalog } from '../../data/catalog';
+import { appendHash, parseTargetRef } from '../utils/targetRef';
 
 const props = withDefaults(
   defineProps<{
@@ -53,7 +54,8 @@ const branchEntries = computed(() => {
 const resolved = computed(() => {
   const byId = (catalog as any).byId ?? {};
   return branchEntries.value.map((e) => {
-    const item = byId[e.targetId];
+    const parsed = parseTargetRef(e.targetId);
+    const item = parsed.id ? byId[parsed.id] : null;
     if (!item) {
       return {
         label: e.label,
@@ -68,7 +70,7 @@ const resolved = computed(() => {
       label: e.label,
       targetId: e.targetId,
       title: String(item.title ?? e.targetId),
-      route: String(item.route ?? ''),
+      route: appendHash(String(item.route ?? ''), parsed.hash),
       missing: false
     };
   });
