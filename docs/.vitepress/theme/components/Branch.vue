@@ -164,6 +164,10 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+.vsbz-branch {
+  display: inline;
+}
+
 .vsbz-branch__trigger {
   display: inline;
   font: inherit;
@@ -171,6 +175,7 @@ onBeforeUnmount(() => {
   background: none;
   border: 0;
   padding: 0;
+  text-align: left;
   cursor: pointer;
   text-decoration: underline;
   text-decoration-style: dotted;
