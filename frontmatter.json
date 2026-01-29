@@ -120,6 +120,12 @@
               "fields": []
             },
             {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
+            },
+            {
               "title": "thread",
               "name": "thread",
               "type": "fields",
@@ -296,6 +302,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             },
             {
               "title": "thread",
@@ -495,6 +507,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             }
           ]
         },
@@ -627,6 +645,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             },
             {
               "title": "thread",
@@ -808,6 +832,12 @@
                 "R-2026-011"
               ],
               "fields": []
+            },
+            {
+              "title": "branches",
+              "name": "branches",
+              "type": "string",
+              "description": "Popup ágak (YAML objektum): links.branches.<popup_id>.<label>: <linked_id>"
             }
           ]
         },

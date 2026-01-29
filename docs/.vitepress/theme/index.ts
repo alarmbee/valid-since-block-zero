@@ -7,6 +7,7 @@ import MailHeader from "./components/MailHeader.vue";
 import CaseStatusSummary from "./components/CaseStatusSummary.vue";
 import MailSendButton from "./components/MailSendButton.vue";
 import DocStatusBadge from "./components/DocStatusBadge.vue";
+import Branch from "./components/Branch.vue";
 
 export default {
 	extends: DefaultTheme,
@@ -17,5 +18,6 @@ export default {
 		app.component("CaseStatusSummary", CaseStatusSummary);
 		app.component("MailSendButton", MailSendButton);
 		app.component("DocStatusBadge", DocStatusBadge);
+		app.component("Branch", Branch);
 	}
 } satisfies Theme;
