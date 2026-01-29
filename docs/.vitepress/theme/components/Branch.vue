@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, useSlots, watch } from 'vue';
 import { useData, withBase } from 'vitepress';
 import { catalog } from '../../data/catalog';
 import { appendHash, parseTargetRef } from '../utils/targetRef';
@@ -15,6 +15,7 @@ const props = withDefaults(
 );
 
 const { frontmatter } = useData();
+const slots = useSlots();
 
 const isOpen = ref(false);
 
@@ -78,6 +79,42 @@ const resolved = computed(() => {
 
 const hasEntries = computed(() => resolved.value.length > 0);
 
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function renderInlineMarkdown(value: string) {
+  // Minimal, safe inline markdown support for slot text (VitePress does not parse markdown inside Vue slots).
+  // Supported: **bold**, `code`
+  const escaped = escapeHtml(value);
+  return escaped
+    .replace(/`([^`]+?)`/g, '<code>$1</code>')
+    .replace(/\*\*([\s\S]+?)\*\*/g, '<strong>$1</strong>');
+}
+
+const triggerHtml = computed(() => {
+  const nodes = slots.default?.() ?? [];
+  if (!nodes.length) return '';
+
+  let raw = '';
+  for (const node of nodes) {
+    if (typeof node.children === 'string') {
+      raw += node.children;
+      continue;
+    }
+    // Non-text VNodes (e.g. <strong>...</strong>) should be rendered by Vue normally.
+    return '';
+  }
+
+  if (!raw.includes('**') && !raw.includes('`')) return '';
+  return renderInlineMarkdown(raw);
+});
+
 function open() {
   if (!hasEntries.value) return;
   isOpen.value = true;
@@ -123,7 +160,8 @@ onBeforeUnmount(() => {
       :aria-disabled="!hasEntries"
       @click="open"
     >
-      <slot />
+      <span v-if="triggerHtml" class="vsbz-branch__triggerContent" v-html="triggerHtml" />
+      <slot v-else />
     </button>
 
     <teleport to="body">
@@ -180,6 +218,10 @@ onBeforeUnmount(() => {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-underline-offset: 3px;
+}
+
+.vsbz-branch__triggerContent {
+  display: inline;
 }
 
 .vsbz-branch__trigger:disabled {
