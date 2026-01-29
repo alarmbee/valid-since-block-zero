@@ -202,6 +202,7 @@ const themeConfig: ThemeConfig = {
   logo: "/favicon.svg",
 
   nav: [
+    { text: "GYIK", link: "/faq/" },
     { text: "Kérdések", link: "/questions/" },
     { text: "Email minták", link: "/templates/" },
     { text: "Esetek", link: "/cases/" },
@@ -219,6 +220,11 @@ const themeConfig: ThemeConfig = {
         { text: "Hogy tudsz segíteni?", link: "/hogy-tudsz-segiteni" },
         { text: "Forrásanyagok", link: "/hivatkozasok" }
       ]
+    },
+    {
+      text: "GYIK",
+      collapsed: true,
+      items: [{ text: "GYIK tájékoztató", link: "/faq/" }]
     },
     {
       text: "Kérdések",
