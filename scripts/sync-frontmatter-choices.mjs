@@ -38,6 +38,7 @@ function classifyKind(docsRelativePath) {
   if (rel.startsWith('templates/')) return 'template';
   if (rel.startsWith('cases/')) return 'case';
   if (rel.startsWith('conclusions/')) return 'conclusion';
+  if (rel.startsWith('faq/')) return 'faq';
   return null;
 }
 
@@ -60,10 +61,11 @@ async function collectIdsByKind() {
     question: path.join(DOCS_DIR, 'questions'),
     template: path.join(DOCS_DIR, 'templates'),
     case: path.join(DOCS_DIR, 'cases'),
-    conclusion: path.join(DOCS_DIR, 'conclusions')
+    conclusion: path.join(DOCS_DIR, 'conclusions'),
+    faq: path.join(DOCS_DIR, 'faq')
   };
 
-  const idsByKind = { question: [], template: [], case: [], conclusion: [] };
+  const idsByKind = { question: [], template: [], case: [], conclusion: [], faq: [] };
   const seenPathsById = new Map();
   const duplicateIds = [];
 
@@ -108,7 +110,8 @@ async function collectIdsByKind() {
     questions: uniqSorted(idsByKind.question),
     templates: uniqSorted(idsByKind.template),
     cases: uniqSorted(idsByKind.case),
-    conclusions: uniqSorted(idsByKind.conclusion)
+    conclusions: uniqSorted(idsByKind.conclusion),
+    faqs: uniqSorted(idsByKind.faq)
   };
 }
 
@@ -133,6 +136,7 @@ async function main() {
     const templatesField = findField(linkSubfields, 'templates');
     const casesField = findField(linkSubfields, 'cases');
     const conclusionsField = findField(linkSubfields, 'conclusions');
+    const faqsField = findField(linkSubfields, 'faqs');
 
     if (!questionsField || !templatesField || !casesField || !conclusionsField) {
       continue;
@@ -142,6 +146,7 @@ async function main() {
     templatesField.choices = ids.templates;
     casesField.choices = ids.cases;
     conclusionsField.choices = ids.conclusions;
+    if (faqsField) faqsField.choices = ids.faqs;
 
     const threadField = findField(linkSubfields, 'thread');
     if (threadField) {

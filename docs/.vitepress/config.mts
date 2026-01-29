@@ -1,5 +1,8 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { catalog } from "./data/catalog";
+import attrs from 'markdown-it-attrs';
+
+const markdownItAttrsPlugin = (attrs as any).default ?? attrs;
 
 function sortById(a: { id: string }, b: { id: string }) {
   return String(a.id).localeCompare(String(b.id));
@@ -336,6 +339,12 @@ export default defineConfig({
       }
     ]
   ],
+
+  markdown: {
+    config(md) {
+      md.use(markdownItAttrsPlugin as any);
+    }
+  },
 
   themeConfig
 });

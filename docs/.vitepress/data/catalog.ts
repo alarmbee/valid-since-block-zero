@@ -16,6 +16,7 @@ export type CatalogRelatedLinks = {
 	templates: string[];
 	cases: string[];
 	conclusions: string[];
+	faqs: string[];
 };
 
 export type CatalogLinks = {
@@ -23,6 +24,7 @@ export type CatalogLinks = {
 	templates: string[];
 	cases: string[];
 	conclusions: string[];
+	faqs: string[];
 	branches: CatalogBranches;
 };
 

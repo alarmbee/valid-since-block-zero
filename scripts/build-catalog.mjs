@@ -43,6 +43,14 @@ function classifyKind(docsRelativePath) {
   return null;
 }
 
+function stripAnchor(targetRef) {
+  const raw = String(targetRef || '').trim();
+  if (!raw) return '';
+  const idx = raw.indexOf('#');
+  if (idx === -1) return raw;
+  return raw.slice(0, idx).trim();
+}
+
 function normalizeLinks(input) {
   const links = input && typeof input === 'object' ? input : {};
   const normalizeArray = (value) => (Array.isArray(value) ? value.filter(Boolean).map(String) : []);
@@ -78,6 +86,7 @@ function normalizeLinks(input) {
     templates: normalizeArray(links.templates),
     cases: normalizeArray(links.cases),
     conclusions: normalizeArray(links.conclusions),
+    faqs: normalizeArray(links.faqs ?? links.faq),
     branches: normalizeBranches(links.branches)
   };
 }
@@ -248,7 +257,7 @@ async function buildCatalog() {
 
   const backlinks = {};
   const ensureBacklinks = (targetId) => {
-    if (!backlinks[targetId]) backlinks[targetId] = { questions: [], templates: [], cases: [], conclusions: [] };
+    if (!backlinks[targetId]) backlinks[targetId] = { questions: [], templates: [], cases: [], conclusions: [], faqs: [] };
     return backlinks[targetId];
   };
 
@@ -265,6 +274,7 @@ async function buildCatalog() {
     if (kind === 'template') return 'templates';
     if (kind === 'case') return 'cases';
     if (kind === 'conclusion') return 'conclusions';
+    if (kind === 'faq') return 'faqs';
     return null;
   };
 
@@ -275,10 +285,11 @@ async function buildCatalog() {
     // Backlinks are grouped by the *source* document kind, not by which
     // `links.*` field was used. This keeps the UI stable (cases never show up
     // under "Kapcsolódó kérdések", etc.).
-    for (const targetId of item.links.questions) ensureBacklinks(targetId)[sourceGroup].push(item.id);
-    for (const targetId of item.links.templates) ensureBacklinks(targetId)[sourceGroup].push(item.id);
-    for (const targetId of item.links.cases) ensureBacklinks(targetId)[sourceGroup].push(item.id);
-    for (const targetId of item.links.conclusions) ensureBacklinks(targetId)[sourceGroup].push(item.id);
+    for (const targetId of item.links.questions) ensureBacklinks(stripAnchor(targetId))[sourceGroup].push(item.id);
+    for (const targetId of item.links.templates) ensureBacklinks(stripAnchor(targetId))[sourceGroup].push(item.id);
+    for (const targetId of item.links.cases) ensureBacklinks(stripAnchor(targetId))[sourceGroup].push(item.id);
+    for (const targetId of item.links.conclusions) ensureBacklinks(stripAnchor(targetId))[sourceGroup].push(item.id);
+    for (const targetId of item.links.faqs ?? []) ensureBacklinks(stripAnchor(targetId))[sourceGroup].push(item.id);
 
     const branches = item.links.branches;
     if (branches && typeof branches === 'object') {
@@ -287,7 +298,7 @@ async function buildCatalog() {
         if (!Array.isArray(entries) || entries.length === 0) continue;
         edgeRecord[popupId] = entries.map((e) => ({ text: String(e.text), targetId: String(e.targetId) }));
         for (const entry of edgeRecord[popupId]) {
-          ensureBranchBacklinks(entry.targetId).push({ sourceId: item.id, popupId, text: entry.text });
+          ensureBranchBacklinks(stripAnchor(entry.targetId)).push({ sourceId: item.id, popupId, text: entry.text });
         }
       }
       if (Object.keys(edgeRecord).length > 0) {
@@ -302,6 +313,7 @@ async function buildCatalog() {
     backlinks[key].templates = Array.from(new Set(backlinks[key].templates)).sort();
     backlinks[key].cases = Array.from(new Set(backlinks[key].cases)).sort();
     backlinks[key].conclusions = Array.from(new Set(backlinks[key].conclusions)).sort();
+    backlinks[key].faqs = Array.from(new Set(backlinks[key].faqs ?? [])).sort();
   }
 
   // De-dup/sort branch backlinks deterministically
