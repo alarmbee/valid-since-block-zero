@@ -11,16 +11,18 @@ links:
   questions: ["Q-002", "Q-003"]
   templates: []
   cases: []
-  conclusions: ["R-2026-001", "R-2026-002", "R-2026-003", "R-2026-004"]
+  conclusions: ["R-2026-001", "R-2026-002", "R-2026-003", "R-2026-004", "R-2026-013"]
 ---
 
 ::: info Forrás (PDF)
+
 - Dokumentum: Országgyűlési írásbeli választ igénylő kérdés, irományszám: **K/13444**
-- Link: https://www.parlament.hu/irom42/13444/13444.pdf
+- Link: [https://www.parlament.hu/irom42/13444/13444.pdf](https://www.parlament.hu/irom42/13444/13444.pdf)
 - Benyújtás dátuma (a PDF szerint): **2026-01-15 14:58**
 - Benyújtó (a PDF szerint): **Gelencsér Ferenc (Momentum)**
 - Címzett (a kérdés címzettje a PDF szerint): **Orbán Viktor, miniszterelnök**
 - Utolsó ellenőrzés: **2026-01-15**
+
 :::
 
 ## Rövid összefoglaló
