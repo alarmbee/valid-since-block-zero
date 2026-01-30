@@ -9,11 +9,13 @@ Ez a gyűjtemény a **2025. évi LXVII. törvény** (kriptovalidációs kötelez
 ## Mit találsz itt?
 
 - Strukturált esetleírások (kérdés → tényállás → vonatkozó források → nyitott kérdések)
+- GYIK: rövid, gyorsan áttekinthető válaszok a visszatérő kérdésekre, hivatkozásokkal a részletesebb anyagokhoz
 - Küldésre kész mintalevelek és állásfoglalás-kérő sablonok
 - Anonimizált levelezések és válaszok az érintett hatóságoktól és szolgáltatóktól
 
 ## Gyors linkek
 
+- [GYIK](/faq/)
 - [Kérdések](/questions/)
 - [Email minták](/templates/)
 - [Esetek](/cases/)

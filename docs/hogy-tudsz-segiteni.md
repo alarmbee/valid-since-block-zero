@@ -2,6 +2,8 @@
 
 A Valid Since Block Zero célja, hogy a kriptovalidációs kötelezettség gyakorlati értelmezéséről **nyilvános, ellenőrizhető és újrafelhasználható** tudásanyag készüljön, ezzel segítve a döntéshozókat, kutatókat, újságírókat és a közvéleményt.
 
+Ha gyorsan szeretnél eligazodni egy visszatérő kérdésben, érdemes először a [GYIK](/faq/) oldalt megnézni: ott rövid válaszok és a részletesebb háttéroldalakra mutató hivatkozások vannak.
+
 Az alábbiak közül mind segít — fontossági sorrendben:
 
 ## 1) Küldj leveleket az érintett szervnek az email sablonok alapján

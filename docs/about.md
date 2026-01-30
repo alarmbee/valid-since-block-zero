@@ -8,6 +8,8 @@ A projekt célja, hogy **strukturált, forrásalapú formában** mutassa be azok
 
 A weboldalon megjelenő tartalom **nem minősül jogi, pénzügyi vagy befektetési tanácsnak**, és nem helyettesíti az illetékes hatóságok, szolgáltatók vagy jogi szakértők hivatalos állásfoglalásait.
 
+A weboldal **GYIK** szekciója a gyors eligazodást szolgálja: rövid, visszatérő kérdésekre adott válaszokat ad, és ahol lehet, visszamutat a részletesebb **kérdés / email minta / eset / következtetés** oldalakra.
+
 ---
 
 ## A projekt célja
