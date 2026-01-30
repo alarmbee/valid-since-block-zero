@@ -109,9 +109,9 @@ function conclusionStatusLabel(status: unknown): string {
 
 function conclusionStatusIconClass(key: ConclusionStatusKey): string {
   if (key === 'hot') return 'fa-solid fa-fire-flame-curved';
-  if (key === 'high') return 'fa-solid fa-triangle-exclamation';
-  if (key === 'medium') return 'fa-solid fa-circle';
-  if (key === 'low') return 'fa-regular fa-circle';
+  if (key === 'high') return 'fa-solid fa-temperature-high';
+  if (key === 'medium') return 'fa-solid fa-temperature-half';
+  if (key === 'low') return 'fa-solid fa-temperature-low';
   return 'fa-regular fa-circle-question';
 }
 
