@@ -179,7 +179,23 @@
 }
 
 /* Conclusion status (sidebar) */
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-cstatus--low .vsbz-status-fa {
+  /* low = green */
+  color: var(--vp-c-tip-1, var(--vp-c-green-1, #22c55e));
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-cstatus--medium .vsbz-status-fa {
+  /* medium = yellow */
+  color: var(--vp-c-warning-1, var(--vp-c-yellow-1, #eab308));
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-cstatus--high .vsbz-status-fa {
+  /* high = orange */
+  color: var(--vp-c-warning-2, var(--vp-c-orange-1, #f97316));
+}
+
 .VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-cstatus--hot .vsbz-status-fa {
+  /* hottest */
   color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
 }
 

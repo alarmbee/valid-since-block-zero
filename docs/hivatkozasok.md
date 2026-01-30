@@ -2,6 +2,8 @@
 
 Ez a dokumentum a **Valid Since Block Zero (vsbz)** projekt során felhasznált, nyilvánosan elérhető **jogszabályi, szabályozási, intézményi és szakmai háttéranyagokat** sorolja fel.
 
+A [GYIK](/faq/) válaszai is ezekre a forrásokra (és a kapcsolódó esetek/következtetések tanulságaira) támaszkodnak; ha egy rövid válaszból mélyebbre mennél, a GYIK tipikusan visszalinkel ide vagy a kapcsolódó dokumentumokra.
+
 A források célja a magyarországi kriptoeszköz-ügyletekhez kapcsolódó **validációs kötelezettség** és annak gyakorlati értelmezése, különös tekintettel a **2025. július 1-jétől hatályos szabályozásra**.
 
 ---
