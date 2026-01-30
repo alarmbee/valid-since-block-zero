@@ -178,6 +178,16 @@
   white-space: nowrap;
 }
 
+/* Conclusion status (sidebar) */
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-cstatus--hot .vsbz-status-fa {
+  color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+}
+
+.VPSidebarItem.level-1:has(.vsbz-sidebar-card--hot) .vsbz-sidebar-card {
+  border-color: var(--vp-c-danger-1, var(--vp-c-red-1, var(--vp-c-brand-1, var(--vp-c-brand))));
+  background-color: var(--vp-c-bg-soft-up);
+}
+
 .VPSidebarItem.level-1:has(.vsbz-sidebar-card) .vsbz-status--open .vsbz-status-dot {
   background-color: var(--vp-c-warning-1, var(--vp-c-brand-1, var(--vp-c-brand)));
 }

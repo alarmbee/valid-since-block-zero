@@ -55,6 +55,8 @@ function caseStatusLabel(status: unknown): string {
 
 type QuestionStatusKey = 'validation' | 'operations' | 'interpretation' | 'certainty' | 'unknown';
 
+type ConclusionStatusKey = 'hot' | 'high' | 'medium' | 'low' | 'unknown';
+
 function questionStatusKey(status: unknown): QuestionStatusKey {
   if (!status) return 'unknown';
   const raw = String(status).trim().toLowerCase();
@@ -82,6 +84,34 @@ function questionStatusIconClass(key: QuestionStatusKey): string {
   if (key === 'operations') return 'fa-solid fa-gears';
   if (key === 'interpretation') return 'fa-solid fa-gavel';
   if (key === 'certainty') return 'fa-solid fa-triangle-exclamation';
+  return 'fa-regular fa-circle-question';
+}
+
+function conclusionStatusKey(status: unknown): ConclusionStatusKey {
+  if (!status) return 'unknown';
+  const raw = String(status).trim().toLowerCase();
+  if (raw === 'hot') return 'hot';
+  if (raw === 'legégetőbb' || raw === 'leggetobb' || raw === 'égető' || raw === 'egeto') return 'hot';
+  if (raw === 'magas' || raw === 'high' || raw === 'súlyos' || raw === 'sulyos') return 'high';
+  if (raw === 'közepes' || raw === 'kozepes' || raw === 'medium') return 'medium';
+  if (raw === 'alacsony' || raw === 'low') return 'low';
+  return 'unknown';
+}
+
+function conclusionStatusLabel(status: unknown): string {
+  const key = conclusionStatusKey(status);
+  if (key === 'hot') return 'HOT';
+  if (key === 'high') return 'magas';
+  if (key === 'medium') return 'közepes';
+  if (key === 'low') return 'alacsony';
+  return typeof status === 'string' && status.trim() ? status : 'ismeretlen';
+}
+
+function conclusionStatusIconClass(key: ConclusionStatusKey): string {
+  if (key === 'hot') return 'fa-solid fa-fire-flame-curved';
+  if (key === 'high') return 'fa-solid fa-triangle-exclamation';
+  if (key === 'medium') return 'fa-solid fa-circle';
+  if (key === 'low') return 'fa-regular fa-circle';
   return 'fa-regular fa-circle-question';
 }
 
@@ -166,10 +196,19 @@ function itemsForConclusions() {
     .slice()
     .sort(sortById)
     .map((i) => {
+      const statusKey = conclusionStatusKey((i as any).status);
+      const statusLabel = escapeHtml(conclusionStatusLabel((i as any).status));
+      const iconClass = escapeHtml(conclusionStatusIconClass(statusKey));
+
+      const cardClass = statusKey === 'hot' ? 'vsbz-sidebar-card vsbz-sidebar-card--hot' : 'vsbz-sidebar-card';
+
       const text = [
-        '<span class="vsbz-sidebar-card">',
+        `<span class="${cardClass}">`,
         `  <span class="vsbz-sidebar-card__id">${escapeHtml(i.id)}</span>`,
         `  <span class="vsbz-sidebar-card__title">${escapeHtml(i.title)}</span>`,
+        statusKey !== 'unknown'
+          ? `  <span class="vsbz-sidebar-card__status vsbz-cstatus--${statusKey}" data-tooltip="${statusLabel}">\n    <i class="vsbz-status-fa ${iconClass}" aria-hidden="true"></i>\n  </span>`
+          : '',
         '</span>'
       ].join('\n');
 

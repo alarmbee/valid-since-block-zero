@@ -1,10 +1,11 @@
 ---
 id: R-2026-012
-title: "Következtetés – EU Bizottság: felszólító levél Magyarországnak a MiCA-val össze nem egyeztethető 'exchange validation services' miatt"
+title: "Jelentés – EU Bizottság: felszólító levél Magyarországnak a MiCA-val össze nem egyeztethető 'exchange validation services' miatt"
 description: "Forrásalapú összefoglaló az Európai Bizottság INF/26/115 döntéséről: kötelezettségszegési eljárás indul (felszólító levél) a MiCA-val össze nem egyeztethető, nemzeti validációs engedélyezés és büntetőjogi felelősség miatt."
 date: 2026-01-30T00:00:00.000Z
 preview: ""
 draft: false
+status: HOT
 tags:
   - MiCA
   - kötelezettségszegési eljárás

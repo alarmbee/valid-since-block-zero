@@ -174,6 +174,22 @@ function normalizeQuestionStatus(value) {
   return String(value);
 }
 
+function normalizeConclusionStatus(value) {
+  if (!value) return null;
+  const raw = String(value).trim().toLowerCase();
+
+  // Canonical labels
+  if (raw === 'hot' || raw === 'legégetőbb' || raw === 'leggetobb' || raw === 'égető' || raw === 'egeto') {
+    return 'HOT';
+  }
+
+  if (raw === 'magas' || raw === 'high' || raw === 'súlyos' || raw === 'sulyos') return 'magas';
+  if (raw === 'közepes' || raw === 'kozepes' || raw === 'medium') return 'közepes';
+  if (raw === 'alacsony' || raw === 'low') return 'alacsony';
+
+  return String(value);
+}
+
 function deriveId(frontmatter, filePath) {
   if (frontmatter && frontmatter.id) return String(frontmatter.id);
   return path.basename(filePath, path.extname(filePath));
@@ -237,6 +253,8 @@ async function buildCatalog() {
               ? normalizeCaseStatus(parsed.data?.status)
               : kind === 'question'
                 ? normalizeQuestionStatus(parsed.data?.status)
+                : kind === 'conclusion'
+                  ? normalizeConclusionStatus(parsed.data?.status)
                 : null
         };
 
