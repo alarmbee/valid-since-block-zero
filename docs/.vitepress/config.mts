@@ -265,7 +265,7 @@ const themeConfig: ThemeConfig = {
     { text: "Kérdések", link: "/questions/" },
     { text: "Email minták", link: "/templates/" },
     { text: "Esetek", link: "/cases/" },
-    { text: "Következtetések", link: "/conclusions/" },
+    { text: "Jelentések", link: "/conclusions/" },
     { text: "Névjegy", link: "/about" }
   ],
 
@@ -301,9 +301,9 @@ const themeConfig: ThemeConfig = {
       items: [{ text: "Esetek listája", link: "/cases/" }, ...itemsForKind("case")]
     },
     {
-      text: "Következtetések",
+      text: "Jelentések",
       collapsed: true,
-      items: [{ text: "Következtetések listája", link: "/conclusions/" }, ...itemsForConclusions()]
+      items: [{ text: "Jelentések listája", link: "/conclusions/" }, ...itemsForConclusions()]
     }
   ],
 

@@ -139,7 +139,7 @@ const hasAnything = computed(() => {
     </div>
 
     <div v-if="resolved.conclusions.length" class="vsbz-related__group">
-      <h3 class="vsbz-group-title">Kapcsolódó következtetések</h3>
+      <h3 class="vsbz-group-title">Kapcsolódó jelentések</h3>
       <ul class="vsbz-link-list">
         <li v-for="item in resolved.conclusions" :key="item.id" class="vsbz-link-item">
           <a v-if="!item.missing" :href="withBase(item.route)" class="vsbz-card-link">

@@ -23,7 +23,7 @@ A VSBZ célja ennek fényében kifejezetten az, hogy a forrásokból ellenőrizh
 - [Kérdések](/questions/)
 - [Email minták](/templates/)
 - [Esetek](/cases/)
-- [Következtetések](/conclusions/)
+- [Jelentések](/conclusions/)
 - [About](/about)
 
 ## Hogyan használd?
