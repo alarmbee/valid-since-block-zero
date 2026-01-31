@@ -6,7 +6,9 @@ title: Valid Since Block Zero
 
 Ez a gyűjtemény a **2025. évi LXVII. törvény** (kriptovalidációs kötelezettség) gyakorlati értelmezését, valamint a validátori működéssel kapcsolatos **eseteket** dokumentálja.
 
-2026. január 30-án az Európai Bizottság **kötelezettségszegési eljárást indított** (felszólító levél – INF/26/115) a magyar kriptovalidációs konstrukció egyes elemei miatt, mert a Bizottság álláspontja szerint azok **nem egyeztethetők össze** a MiCA egységes, közvetlenül alkalmazandó keretével. Ez a fejlemény a VSBZ szempontjából azt jelenti, hogy a korábban „csak” jogértelmezési vitának tűnő kérdések egy része immár **uniós jogérvényesítési** kontextusban is megjelent.
+::: warning Fontos új fejlemény!!!
+2026\. január 30-án az Európai Bizottság **kötelezettségszegési eljárást indított** (felszólító levél – INF/26/115) a magyar kriptovalidációs konstrukció egyes elemei miatt, mert a Bizottság álláspontja szerint azok **nem egyeztethetők össze** a MiCA egységes, közvetlenül alkalmazandó keretével. Ez a fejlemény a VSBZ szempontjából azt jelenti, hogy a korábban „csak” jogértelmezési vitának tűnő kérdések egy része immár **uniós jogérvényesítési** kontextusban is megjelent.
+:::
 
 A VSBZ célja ennek fényében kifejezetten az, hogy a forrásokból ellenőrizhetően bemutassa a gyakorlati feszültségeket, és **döntéshozói tisztázást ösztönző, tájékoztató** keretet adjon a kiszámítható, jogbiztonságot nyújtó szabályozási környezet **helyreállításához**.
 
