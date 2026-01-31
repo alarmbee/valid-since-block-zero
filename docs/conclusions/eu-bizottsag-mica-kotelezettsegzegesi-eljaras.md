@@ -42,7 +42,7 @@ A Bizottság értékelése szerint ez a megoldás **nem fér össze a MiCA egys�
 ## Mi a Bizottság eljárásának lényege (közérthetően)
 
 - **Nem egy bírósági ítélet**, hanem egy uniós jogérvényesítési eljárás **első szakasza**.
-- A Bizottság azt jelzi: a magyar szabályozás egy eleme **ellentétes lehet** az uniós joggal (itt: a MiCA rendelettel).
+- A Bizottság azt jelzi: álláspontja szerint a magyar szabályozás egyes elemei **ellentétesek** az uniós joggal (itt: a MiCA rendelettel), ezért uniós jogérvényesítési eljárást indít.
 - A felszólító levél célja: a tagállam **magyarázza meg** álláspontját, és/vagy **igazítsa** a szabályozást az uniós kerethez.
 
 ## Mit állít a Bizottság a MiCA és a magyar módosítás viszonyáról (INF/26/115 alapján)
@@ -64,6 +64,8 @@ A VSBZ-ben dokumentált kérdések és esetek visszatérő eleme, hogy a magyar 
 - a piaci reakciók alapján **tényleges hozzáférési szűküléssel** járhat.
 
 A Bizottság eljárása ezért a VSBZ szempontjából egy olyan külső, intézményi jelzés, amely közvetlenül ugyanazt a kérdéscsomagot érinti: **összeegyeztethető-e** a magyar validációs többletkövetelmény a MiCA egységes piacra épülő logikájával.
+
+VSBZ-szempontból ennek következménye, hogy a cél nem pusztán „háttérmagyarázat”: a projekt a források alapján azokat a pontokat emeli ki, ahol a jogszabályi környezet **kiszámíthatósága, hozzáférhetősége és megfelelhetősége** sérülhet, és ahol ezért **döntéshozói tisztázás** (átmenet, útmutató, ütemezés, MiCA-kompatibilitás) indokolt.
 
 ## Források
 

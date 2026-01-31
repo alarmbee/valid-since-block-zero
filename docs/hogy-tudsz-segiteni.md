@@ -2,6 +2,8 @@
 
 A Valid Since Block Zero célja, hogy a kriptovalidációs kötelezettség gyakorlati értelmezéséről **nyilvános, ellenőrizhető és újrafelhasználható** tudásanyag készüljön, ezzel segítve a döntéshozókat, kutatókat, újságírókat és a közvéleményt.
 
+Mivel az Európai Bizottság 2026. január 30-án **kötelezettségszegési eljárást indított** (felszólító levél – INF/26/115) a magyar konstrukció MiCA-kompatibilitása kapcsán, különösen fontos, hogy a hazai döntéshozók és illetékes szervek **egyértelmű, kiszámítható és ellenőrizhető** kereteket adjanak: mi a jogszerű eljárás, hogyan teljesíthető a kötelezettség a gyakorlatban, és milyen átmeneti megoldások biztosítják a jogbiztonságot.
+
 Ha gyorsan szeretnél eligazodni egy visszatérő kérdésben, érdemes először a [GYIK](/faq/) oldalt megnézni: ott rövid válaszok és a részletesebb háttéroldalakra mutató hivatkozások vannak.
 
 Az alábbiak közül mind segít — fontossági sorrendben:
@@ -14,6 +16,12 @@ Miért ez a legfontosabb?
 
 - Egy-egy levél önmagában nem feltétlenül mutatja meg, hogy **tömegek várnak választ** ugyanarra a problémára.
 - A sok, hasonló tárgyú megkeresés jobban láthatóvá teszi, hogy az ügy **rendszerszintű**.
+
+Különösen most érdemes nyomatékos, de tényszerű hangnemben kérni:
+
+- **MiCA-kompatibilitás tisztázását** és a Bizottság eljárására adott hazai lépések ütemezését,
+- **átmeneti/jogbiztonsági megoldásokat** (útmutató, moratórium, kapacitás- és hozzáférési kérdések kezelése),
+- a felhasználók és szolgáltatók számára **előrelátható** megfelelési útvonalat.
 
 Tipp: a sablont nyugodtan igazítsd a saját esetedhez (tények, dátumok, szolgáltató, körülmények).
 
