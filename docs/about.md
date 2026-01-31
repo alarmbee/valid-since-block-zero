@@ -20,7 +20,9 @@ A Valid Since Block Zero elsődleges célja az, hogy segítse az eligazodást a 
 - jogi és technikai fogalmak egymás mellett, de eltérő kontextusban kerülnek alkalmazásra,
 - a szabályozási környezet értelmezése a gyakorlatban kérdéseket vet fel.
 
-A projekt nem foglal állást egyetlen jogszabály, intézmény vagy piaci szereplő megítélésében sem. A tartalom célja kizárólag az információk egymás melléhelyezése, rendszerezése és értelmezési keretek bemutatása.
+A projekt nem pártpolitikai szereplő, és nem feladata egyedi ügyek „eldöntése”. Ugyanakkor a VSBZ nyíltan vállalja, hogy a dokumentálás és rendszerezés **közérdekű célja** a **jogbiztonság**: a kiszámítható, hozzáférhető és követhető szabályozási környezet helyreállításának elősegítése azáltal, hogy a gyakorlatban jelentkező ellentmondásokat és hiányokat forrásokkal alátámasztva láthatóvá teszi.
+
+Ennek súlyát növeli, hogy az Európai Bizottság 2026. január 30-án **kötelezettségszegési eljárást indított** (felszólító levél – INF/26/115) a magyar kriptovalidációs konstrukció MiCA-kompatibilitása kapcsán. Ez nem bírósági ítélet, de egy olyan **intézményi jogérvényesítési jelzés**, amely a VSBZ-ben tárgyalt kérdések közül többnek a relevanciáját és sürgősségét megerősíti.
 
 A projekt szerkesztési elvei között fontos szempont a **véleményszabadság (véleménynyilvánítás szabadsága)** tiszteletben tartása: teret ad különböző, jóhiszemű értelmezések bemutatásának, **amennyiben azok forrásokra támaszkodnak**, és a vita keretei tiszteletteljesek maradnak. A közösségi felületeken megjelenő hozzászólások kezelésére a projekt a [Moderálás](./moderalas.md) elveit alkalmazza.
 
@@ -35,6 +37,7 @@ A projekt szerkesztési elvei között fontos szempont a **véleményszabadság 
 - Dokumentálja az egyes szereplők által **deklarált feladatokat és
   kötelezettségeket** a rendelkezésre álló források alapján.
 - Külön kiemelt célként megjelöli, hogy feltárja azokat a **jogharmonizációs vagy szolgáltatói hiányosságokat**, illetve értelmezési feszültségeket, amelyek esetében **felmerülhet az összhang hiánya** a **közvetlenül alkalmazandó uniós joggal** (pl. [EU rendelet](https://eur-lex.europa.eu/legal-content/HU/TXT/PDF/?uri=CELEX:32023R1113#:~:text=(12))) vagy más vonatkozó előírásokkal.
+- Külön kiemelt célként megjelöli, hogy feltárja azokat a **jogharmonizációs vagy szolgáltatói hiányosságokat**, illetve értelmezési feszültségeket, amelyek esetében az uniós joggal való összhang kérdése nem tisztázott, vagy a Bizottság álláspontja szerint **nem biztosított**.
 - Segíti a látogatót abban, hogy a jogi és technikai információkat **összefüggéseiben értelmezze**.
 
 ### Amit a projekt nem csinál
@@ -42,7 +45,7 @@ A projekt szerkesztési elvei között fontos szempont a **véleményszabadság 
 - Nem minősít jogszabályokat vagy intézményi döntéseket.
 - Nem vizsgál egyedi tranzakciókat vagy konkrét ügyeket.
 - Nem nyújt jogi tanácsadást, megfelelési auditot vagy hatósági állásfoglalást.
-- Nem ösztönöz semmilyen konkrét pénzügyi, technikai vagy üzleti döntésre.
+- Nem ösztönöz semmilyen konkrét **egyéni** pénzügyi, technikai vagy üzleti döntésre.
 
 ---
 
