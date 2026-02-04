@@ -1,6 +1,7 @@
 import { defineConfig, type DefaultTheme } from "vitepress";
 import { catalog } from "./data/catalog";
 import attrs from 'markdown-it-attrs';
+import container from 'markdown-it-container';
 
 const markdownItAttrsPlugin = (attrs as any).default ?? attrs;
 
@@ -382,6 +383,23 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(markdownItAttrsPlugin as any);
+
+      md.use(container as any, 'update', {
+        validate(params: string) {
+          return /^update(\s+.*)?$/.test(params.trim());
+        },
+        render(tokens: any[], idx: number) {
+          const info = String(tokens[idx].info ?? '').trim();
+          const match = info.match(/^update(?:\s+(.*))?$/);
+          const title = match?.[1] ? escapeHtml(match[1]) : 'Update';
+
+          if (tokens[idx].nesting === 1) {
+            return `<div class="custom-block update"><p class="custom-block-title">${title}</p>\n`;
+          }
+
+          return `</div>\n`;
+        }
+      });
     }
   },
 

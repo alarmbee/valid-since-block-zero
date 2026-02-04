@@ -262,3 +262,13 @@
 .VPSidebarItem.level-1:first-child .text::before {
   display: none;
 }
+
+/* Custom markdown container: ::: update */
+.vp-doc .custom-block.update {
+  border-color: var(--vp-c-brand-1, var(--vp-c-brand));
+  background-color: var(--vp-c-bg-soft-up);
+}
+
+.vp-doc .custom-block.update .custom-block-title {
+  color: var(--vp-c-brand-1, var(--vp-c-brand));
+}
