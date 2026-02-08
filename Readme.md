@@ -23,29 +23,34 @@ Ezzel a projekt egy **közös tudásbázist** kíván létrehozni, amely segíti
 
 ## A tartalom felépítése
 
-A repository három, egymásra épülő tartalmi szintet kezel:
+A tartalom a VitePress oldal `docs/` könyvtárában él, tematikus mappákba rendezve.
 
-### 1. Egyszerű kérdések
+### Fő tartalomtípusok
 
-Rövid, közérthető kérdések, amelyek a validációs előírással kapcsolatban felmerülhetnek.  
-Ezek a kérdések GitHubon, pull request formájában bővíthetők.
+1. **Kérdések** (`docs/questions/`)
+	- rövid, közérthető kérdések a validációs előírás gyakorlati értelmezéséhez
 
-### 2. Kidolgozott email sablonok
+2. **Email / beadvány sablonok** (`docs/templates/`)
+	- a kérdésekből kiinduló, testre szabható megkeresések (állásfoglalás-kérés, panasz jellegű beadványok)
 
-Az egyszerű kérdések alapján készült, jogilag korrekt megkereső levelek, amelyek:
-- állásfoglalás kérésére,
-- vagy panasz jellegű megkeresésre használhatók.
+3. **Esetek (precedensek)** (`docs/cases/`)
+	- anonimizált, valós levelezések/megkeresések dokumentálása és a kapott válaszok
 
-A sablonok szabadon letölthetők és személyre szabhatók.
+4. **Következtetések / összegzések** (`docs/conclusions/`)
+	- több forrásból (hatósági válaszok, nyilvános kommunikáció, piaci reakciók) levezetett, szerkesztett összefoglalók
 
-### 3. Esetek (precedensek)
+5. **GYIK** (`docs/faq/`)
+	- ismétlődő kérdések rövid, fenntartható karbantarthatóságra optimalizált válaszokkal
 
-Anonimizált, valós email levelezések dokumentálása, amelyek bemutatják:
-- milyen kérdés került feltételre,
-- milyen formában történt a megkeresés,
-- és milyen válasz érkezett.
+### Kiegészítő oldalak
 
-Céljuk a gyakorlati tapasztalatok összegyűjtése és összehasonlíthatóvá tétele.
+- Általános tájékoztató és működési oldalak: `docs/` (pl. impresszum, moderálás, adatkezelés, cookie)
+- Hivatkozásgyűjtemény: `docs/hivatkozasok.md`
+
+### Mellékletek, forrásfájlok
+
+- Dokumentumok és mellékletek katalógusa: `docs/files/catalog.json`
+- A VitePress által publikált, statikus fájlok tükre: `public/files/` (a katalógussal szinkronban)
 
 ---
 
@@ -58,6 +63,15 @@ A projekt teljes egészében nyílt forráskódú, és statikus módon kerül pu
 - VitePress alapú dokumentációs felület
 
 Ez biztosítja az átláthatóságot, a verziókövetést és a hosszú távú hozzáférhetőséget.
+
+### Automatizálás (scripts)
+
+A tartalom karbantartását néhány Node script segíti a `scripts/` mappában, többek között:
+
+- fájlkatalógus építése/frissítése (`build-catalog.mjs`)
+- `docs/files/` → `public/files/` szinkronizálása (`sync-public-files.mjs`)
+- frontmatter választólisták szinkronja (`sync-frontmatter-choices.mjs`)
+- PDF szövegkinyerés támogatás (`extract-pdf-text.mjs`)
 
 ---
 
